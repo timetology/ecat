@@ -1,0 +1,13 @@
+SELECT  mn.MachineName
+,pa.path
+,ar.type
+,la.LaunchArguments
+
+FROM
+	[dbo].[mocAutoruns] AS [ar] WITH(NOLOCK)
+	LEFT JOIN [dbo].[Paths] AS [pa] WITH(NOLOCK) ON ([pa].[PK_Paths] = [ar].[FK_Paths__RegistryPath])
+	LEFT JOIN [dbo].[MachineModulePaths] AS [mp] WITH(NOLOCK) ON ([mp].[PK_MachineModulePaths] = [ar].[FK_MachineModulePaths] AND [mp].[FK_Machines] = [ar].[FK_Machines])
+	LEFT JOIN [dbo].[Modules] AS [mo] WITH(NOLOCK) ON ([mo].[PK_Modules] = [mp].[FK_Modules])
+	LEFT JOIN [dbo].[machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [ar].[FK_Machines]
+	LEFT JOIN dbo.LaunchArguments as la WITH(NOLOCK) ON la.PK_LaunchArguments = ar.FK_LaunchArguments 
+WHERE 
