@@ -24,4 +24,4 @@ from dbo.MachineModulePaths as mp
 where
 	ofn.filename = N''
 	--OR sfn.filename = N''
-	--OR mo.descrtion = N''
+	--OR mo.description = N''
