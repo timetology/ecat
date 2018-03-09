@@ -1,0 +1,35 @@
+--Dump IIOC Hits for a specific machine with module information
+--Can then cross correlate with TEMPLATE_MachineModulesPaths for additional information
+--Also correlate with Template_NetworkTracking & Tempalte_BehaviorTracking
+SELECT
+
+	ma.machinename
+	,ie.EvaluationUTCDate
+	,iq.description
+	,iq.IOCLevel
+	,CASE
+		WHEN ie.ioccontext = 0 THEN 'Machine'
+		WHEN ie.ioccontext = 1 THEN 'Module'
+		WHEN ie.ioccontext = 2 THEN 'Event'
+		WHEN ie.ioccontext = 3 THEN 'Network'
+	END AS IOCType
+	,mo.FirstSeenFilename
+	,mo.OriginalFilename
+	,mo.size
+	,mo.DaysSinceCompilation
+	,mo.Description
+	,mo.FirstSeenUTCDate
+	,mo.HashMD5
+
+FROM
+
+	dbo.IOCEvaluation as ie with(nolock)
+	inner join dbo.iocquery as iq with(nolock) on iq.pk_IOCQuery = ie.fk_IOCQuery
+	inner join dbo.machines as ma with(nolock) on ie.fk_machines = ma.pk_machines
+	inner join dbo.uvw_modules as mo with(nolock) on ie.fk_modules = mo.pk_modules
+	inner join dbo.MachineModulePaths as mp with(nolock) on mo.pk_modules = mp.fk_modules
+
+
+WHERE
+ma.machinename = ''
+--AND EventUTCTime >= DATEADD(DAY, -30, GETUTCDATE()) --For last 30 days
