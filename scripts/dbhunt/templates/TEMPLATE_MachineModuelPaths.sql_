@@ -8,7 +8,7 @@ mn.machinename
 ,mo.HashMD5
 ,mo.size
 ,mo.DaysSinceCompilation
-,mo.DaysSinceCreation
+--,mo.DaysSinceCreation
 ,mp.FileUTCTimeCreated
 ,mp.FileUTCTimeModified
 ,mo.NameImportedDlls
