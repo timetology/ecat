@@ -1,0 +1,43 @@
+This batch file runs some generic grep searches accross the shimcache results.
+The grep searches are both frequency based, that is how many times does a file appear accross the data set
+and IOC based, such as files with one character file name, or files with uncommon extensions, etc.
+
+There is also an ioc-terms.txt that it will ingest and run agains the data set.  
+Make sure that terms that have spaces have quotes in them, such as last mod dates of malware.
+
+The batch file relies on Unix Utils: grep.exe, cut.exe and sort.exe (included with package)
+
+The script requires one argument: the file containing all the shimchace results.
+
+
+The Goat Team
+
+
+Sample execution:
+
+C:\Hermes\MassTriage>shimalizer.bat SHIM.csv
+
+Script: Shimalizer v1.0
+Author: The Goat Factory
+Date:   20 October 2014
+Legal1: Got Milk?"
+Legal2: Milk it!
+
+SHIM file: SHIM.csv
+
+Processing reserved names....
+Processing Windows folder...
+Processing system32 folder...
+Processing TEMP folder...
+Processing TMP folder...
+Processing 2 char filenames...
+Processing filenames with suspicious extensions...
+Processing filenames with .tmp extension...
+Processing 1 char filenames...
+Processing files one directory deep...
+Processing self-extracting folders...
+Processing batch filenames...
+Processing keywords in ioc-terms.txt file...
+
+
+C:\Hermes\MassTriage>

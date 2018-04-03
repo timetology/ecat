@@ -1,0 +1,2 @@
+C:\Windows\System32\winevt\Logs\security.evtx
+C:\Windows\System32\winevt\Logs\system.evtx

@@ -1,0 +1,2 @@
+machine1,c:\Windows\System32\office.exe
+machine2,c:\Windows\System32\keke.exe

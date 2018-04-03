@@ -1,0 +1,5 @@
+C:\Windows\AppCompat\Programs\RecentFilecache.bcf
+C:\Windows\AppCompat\Programs\Amcache.hve
+C:\Windows\System32\Tasks\At*.job
+C:\Windows\Tasks\At*.job
+C:\Windows\Prefetch\*.pf

@@ -1,0 +1,6 @@
+c:\windows\system32\sethc.exe
+c:\Windows\SysWOW64\sethc.exe
+c:\windows\system32\utilman.exe
+c:\Windows\SysWOW64\utilman.exe
+c:\windows\system32\osk.exe
+c:\Windows\SysWOW64\osk.exe

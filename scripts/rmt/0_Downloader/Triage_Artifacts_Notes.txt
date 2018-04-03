@@ -1,0 +1,40 @@
+Triage Artifacts
+Included
+C:\Windows\system32\config\SYSTEM
+C:\Windows\AppCompat\Programs\Amcache.hve
+C:\Windows\AppCompat\Programs\RecentFilecache.bcf
+C:\Windows\System32\Tasks\at*.job (Win7+)
+C:\Windows\Tasks\At*.job (2000, XP, 2003)
+
+Not Included (yet)
+Scheduled Tasks
+C:\Windows\Tasks\Schedlgu.txt (2003, Win7+)
+C:\Windows\Schedlgu.txt (XP)
+Task Scheduler Logs (Vista+)
+C:\Windows\System32\winevt\Logs\Microsoft-Windows-TaskScheduler Operational.evtx
+Registry Hives
+C:\Windows\System32\config\SOFTWARE
+C:\Users\<compromised_user>\NTUSER.DAT
+Prefetch
+C:\Windows\Prefetch\*
+
+StickyKeys
+c:\windows\system32\sethc.exe
+C:\Windows\SysWOW64\sethc.exe
+c:\windows\system32\utilman.exe
+C:\Windows\SysWOW64\utilman.exe
+c:\windows\system32\osk.exe
+C:\Windows\SysWOW64\osk.exe
+
+Starts with
+System.Filename:~<system_
+System.Filename:~<amcache_
+System.Filename:~<recentfilecache_
+System.Filename:~<at_
+System.Filename:~<schedlgu_
+
+Contains
+System.Filename:~=
+
+Ends with 
+System.Filename:~>

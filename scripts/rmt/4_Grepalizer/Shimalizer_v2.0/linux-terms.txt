@@ -1,0 +1,11 @@
+history -c
+history -w
+> .bash_history
+.bash_history
+who
+whoami
+sudo
+wget
+passwd
+useradd
+usermod

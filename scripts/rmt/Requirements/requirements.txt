@@ -1,0 +1,5 @@
+pyodbc>=3.0.10
+unicodecsv>=0.14.1>=2.9.6
+MarkupSafe>=0.23
+jinja2>=2.9.6
+tqdm>=4.11.2
