@@ -1,4 +1,4 @@
-﻿#encoding: utf-8
+#encoding: utf-8
 #
 # RSA Mass Triage (RMT)
 # RSA Incident Response firstresponse@rsa.com incidentresponse.rsa.com
@@ -32,6 +32,8 @@
 #	Added todo for adding option to delete file after parsing
 # .8 11Oct2017
 #	Change overwrite behavior to be default and append to be option.
+# .9 05April2018
+# 	Fixed issues with -m Muicache Parsing
 
 from __future__ import unicode_literals
 
@@ -690,7 +692,8 @@ def Process_UserAssist(path):
 					#print windate
 					
 def Process_MuiCache(path):
-	total_files = getTotalFilesStartsWith(path, 'ntuser_')
+	total_files = 0
+	total_files += getTotalFilesStartsWith(path, 'ntuser_')
 	total_files += getTotalFilesStartsWith(path, 'usrclass_')
 	print("NTUSER.DAT/USRCLASS.DAT Hive Count: {}".format(total_files))
 	counter = 0
@@ -700,32 +703,35 @@ def Process_MuiCache(path):
 		if (fname.lower().startswith('ntuser_') or fname.lower().startswith('usrclass_')):
 			#Get hostname from ECAT style Filename
 			hostname = getHostnameFromFilename(fname)
-
+			#open Registry as r
+			r = Registry.Registry(filename)
+			
 			#entries = ''
 			if g_debug:
 				print('[+] Parsing file: {}'.format(filename))
+			
 			if fname.lower().startswith('ntuser'):
 				try:
 					entries = muicache.parseMuiCacheNTUSER(r)
 				except Registry.RegistryKeyNotFoundException as e:
 					if g_debug:
-						print '[!] MuiCache not found in {}',format(args.input)
+						print '[!] MuiCache not found in {}',format(filename)
 				else:
 					for e in entries:
-						last_write = e[0]
+						lastwrite = e[0]
 						name = e[1]
 						#data = e[2]
 						line = "{},{},{},{},{},{},{},{}".format(hostname, "", lastwrite.strftime(DATE_ISO), name, "", "", "", "muicache")
 						write_line(line)
 			elif fname.lower().startswith('usrclass'):
 				try:
-					entries = parseMuiCacheUSRCLASS(r)
+					entries = muicache.parseMuiCacheUSRCLASS(r)
 				except Registry.RegistryKeyNotFoundException as e:
 					if g_debug:
-						print '[!] MuiCache not found in {}',format(args.input)
+						print '[!] MuiCache not found in {}',format(filename)
 				else:
 					for e in entries:
-						last_write = e[0]
+						lastwrite = e[0]
 						name = e[1]
 						#data = e[2]
 						line = "{},{},{},{},{},{},{},{}".format(hostname, "", lastwrite.strftime(DATE_ISO), name, "", "", "", "muicache")
@@ -815,8 +821,7 @@ def main():
 		Process_UserAssist(args.userassist)
 		
 	if args.muicache:
-		Process_MuiCache(args.userassist)
-
+		Process_MuiCache(args.muicache)
 
 if __name__ == '__main__':
 	main()
