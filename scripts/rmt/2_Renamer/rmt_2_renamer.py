@@ -4,7 +4,6 @@
 #
 # TODO:
 #	Add in copy ability
-#	-r RECURSE??? (maybe for copy only)
 #	Add in pre/suffix ability
 #	Logging
 # 	Handle >1 MachineName returned better
