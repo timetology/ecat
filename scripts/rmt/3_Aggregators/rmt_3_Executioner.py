@@ -4,14 +4,13 @@
 # RSA Incident Response firstresponse@rsa.com incidentresponse.rsa.com
 #
 # TODO
-#  Cleanup? (delete file after parsing?)
-#  NTUSER.DAT Parsing.
-#  USERCLASS.DAT
-#		MUICACHE
-#  Rework csv format (headings/columns changing)
-#  Move get hostname from filename to its own function(s) startswith endswith.
+# Cleanup? (delete file after parsing?)
+# Further NTUSER.DAT Parsing.
+# Further USERCLASS.DAT Parsing
+# Rework csv format (headings/columns)
 # Superfetch?
 # SRUM?
+# Speed up amcache parsing
 #
 # Change Log
 # .1 3May2016 
