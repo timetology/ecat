@@ -10,7 +10,7 @@
 # .1	01Feb2017 - Initial Development
 # .2	15Feb2017 - Cleanup
 # TODO
-#
+# Provide list of machines to only download from
 
 import argparse
 import os
