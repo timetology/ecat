@@ -17,6 +17,7 @@
 # Determine Interaction with a multiserver environment
 # Add option to only download from systems which have not yet been downloaded
 # Fix percentage
+# Provide list of machine names to only download from.
 
 import argparse
 import pyodbc
