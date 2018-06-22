@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # DBHunter
 # Author: RSA IR <firstresponse@rsa.com>
-# Version: .11
 #
 # Description: For each SQL file in the supplied directory (traversed recursively), run the SQL Query
 # and return the requested data in a CSV
@@ -18,11 +17,16 @@
 # .9	08Nov2016 - Prompt for password if not specified on command line
 # .10	14Nov2016 - Fixed bug with --progressbar option
 # .11	01May2017 - Switched to using unicodecsv for writing output
+# .12	22Jun2017 - Added option to connecting to db via ssl (if enabled on db)
 #
 # TODO
-# Handle Unicode Better
 # Allow specified time range for tracking events (e.g. last 24 hours)
 # MultiThreaded? (add sql to process to list, remove when thread starts processing?)
+# 
+# NOTE
+# for systems with Instance names use -s <servername>\<instancename>, for servers with different port use -s <servername>,<port>, 
+# for systems with Instance name and non standard port use -s <servername>\<instancename>,<port>
+# e.g. -s localhost\sql1,52000
 
 import argparse
 import os
@@ -134,6 +138,7 @@ def main():
 	parser.add_argument('-db','--database', help='ECAT database', metavar='<database>', default='ECAT$PRIMARY')
 	parser.add_argument('-o','--output', help='Output Directory', metavar='<output_dir>', default=os.getcwd())
 	parser.add_argument('-r','--recursive', help='Recursively traverse directory for .sql files', action='store_true', default=False)
+	parser.add_argument('--ssl', help='Use SSL', action='store_true', default=False)
 	parser.add_argument('--debug', help='Enable Debug Messages', action='store_true', default=False)
 	parser.add_argument('--progressbar', help='Include Progress bar (requires tqdm)', action='store_true', default=False)
 
@@ -184,11 +189,16 @@ def main():
 
 
 	#Build query to connect to DB
-	if args.user and args.passwd:
-		conn = 'DRIVER={};SERVER={};DATABASE={};UID={};PWD={}'.format('{SQL Server}', args.server, args.database, args.user, args.passwd)
+	if args.ssl:
+		if args.user and args.passwd:
+			conn = 'DRIVER={};SERVER={};DATABASE={};UID={};PWD={};Encrypt=yes;TrustServerCertificate=YES'.format('{ODBC Driver 13 for SQL Server}', args.server, args.database, args.user, args.passwd)
+		else:
+			conn = 'DRIVER={};SERVER={};DATABASE={};Trusted_Connection=yes;Encrypt=yes;TrustServerCertificate=YES'.format('{ODBC Driver 13 for SQL Server}', args.server, args.database)
 	else:
-		conn = 'DRIVER={};SERVER={};DATABASE={};Trusted_Connection=yes'.format('{SQL Server}', args.server, args.database)
-
+		if args.user and args.passwd:
+			conn = 'DRIVER={};SERVER={};DATABASE={};UID={};PWD={}'.format('{SQL Server}', args.server, args.database, args.user, args.passwd)
+		else:
+			conn = 'DRIVER={};SERVER={};DATABASE={};Trusted_Connection=yes'.format('{SQL Server}', args.server, args.database)
 	#Connect to DB
 	try:
 		db = pyodbc.connect(conn)
