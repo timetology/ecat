@@ -44,6 +44,10 @@ def main():
 
 	args = parser.parse_args()
 
+	host_tracking = open("./host_tracking.txt")
+	current_hosts = host_tracking.read()
+	host_tracking.close()
+	print("Current Number of Hosts: {} \r\n".format(current_hosts))
 	#global g_debug
 	g_debug = args.debug
 	filename = args.filename
@@ -92,9 +96,22 @@ def main():
 	cursor.execute(txt)
 	rows = cursor.fetchall()
 	total_files = len(rows)
+	hosts = "select MachineName from dbo.Machines where dbo.Machines.FK_OSTypes = 1 and dbo.Machines.MarkedAsDeleted = 0"
+	cursor.execute(hosts)
+	hostnames = cursor.fetchall()
 	if g_debug:
 		print 'Number of Systems: ' + str(len(rows)) + '\n'
-
+	if int(current_hosts) < int(len(rows)):
+		print 'Additional ' + str(int(len(rows)) - int(current_hosts)) + ' found.\n'
+		#print(hostnames[0])
+		host_tracking = open("./host_tracking.txt","w")
+		host_tracking.write(str(len(hostnames)))
+		host_tracking.close()
+		hostlist = open("./hostlist.txt","a+")
+		for i in range(int(current_hosts), int(len(hostnames))):
+			hostlist.write("%s\r\n" % str(hostnames[i][0]))
+			#print str(hostnames[i][0]) + 'added to hostlist.txt\r\n'
+		hostlist.close()
 	#if (len(rows) < 1000):
 		#Split list into chunks
 		#numchunks = int(math.ceil(len(rows) / 1000.00))
@@ -106,12 +123,12 @@ def main():
 		#	print item[0]
 		#	print '\n*********************************************\n'
 
-	lol = lambda lst, sz: [lst[i:i+sz] for i in range(0, len(lst), sz)]
+	lol = lambda lst, sz, start: [lst[i:i+sz] for i in range(start, len(lst), sz)]
 	
 	count = 0
 	if g_debug:
 		#Process args.batch (default 100) at a time NO tqdm
-		for list in lol(rows,int(args.batch)):
+		for list in lol(rows,int(args.batch), int(current_hosts)):
 			#print item
 			count += 1
 			if g_debug:
@@ -143,7 +160,7 @@ def main():
 				sleep(0.05)
 	else:
 		#Process args.batch (default 100) at a time
-		for list in tqdm(lol(rows,int(args.batch))):
+		for list in tqdm(lol(rows,int(args.batch),int(current_hosts))):
 			#print item
 			count += 1
 			if g_debug:
