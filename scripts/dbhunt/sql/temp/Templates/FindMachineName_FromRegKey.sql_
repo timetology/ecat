@@ -1,0 +1,9 @@
+SELECT DISTINCT
+	me.MachineName,
+	ar.Path__RegistryPath
+FROM
+	[dbo].[uvw_mocAutoruns] AS [ar] WITH(NOLOCK)
+	INNER JOIN [dbo].[Machines] AS [me] WITH(NOLOCK) ON ([me].AgentID = [ar].AgentID)
+
+WHERE
+	ar.Path__RegistryPath = 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run @ShopAtHomeUpdater'
