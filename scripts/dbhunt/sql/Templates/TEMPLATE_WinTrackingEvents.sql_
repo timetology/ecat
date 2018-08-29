@@ -27,7 +27,7 @@ UNION
 SELECT  mn.MachineName, 
 		se.EventUTCTime, 
 		pa.Path as 'SourcePath', 
-		sfn.Filename as 'SourceFile', 
+		fn.Filename as 'SourceFile', 
 		se.Path_Target, 
 		se.FileName_Target, 
 		se.LaunchArguments_Target, 
