@@ -32,7 +32,7 @@ SELECT  mn.MachineName,
 			WHEN SE.BehaviorRegistryModifyWindowsSystemPolicy = 1 THEN 'ModifyWindowsSystemPolicy'
 			WHEN SE.BehaviorRegistryModifyZoneCrossingWarningSetting = 1 THEN 'ModifyZoneCrossingWarningSetting'
 			WHEN SE.BehaviorFileBlockedDeleted = 1 THEN 'FileBlockedAAndDeleted'
-		END AS EventType,
+		END AS EventType
 FROM
 	--[dbo].[WinTrackingEventsCache] AS [se] WITH(NOLOCK)
 	[dbo].[WinTrackingEvents_P0] AS [se] WITH(NOLOCK)
@@ -82,7 +82,7 @@ SELECT  mn.MachineName,
 			WHEN SE.BehaviorRegistryModifyWindowsSystemPolicy = 1 THEN 'ModifyWindowsSystemPolicy'
 			WHEN SE.BehaviorRegistryModifyZoneCrossingWarningSetting = 1 THEN 'ModifyZoneCrossingWarningSetting'
 			WHEN SE.BehaviorFileBlockedDeleted = 1 THEN 'FileBlockedAAndDeleted'
-		END AS EventType,
+		END AS EventType
 FROM
 	--[dbo].[WinTrackingEventsCache] AS [se] WITH(NOLOCK)
 	--[dbo].[WinTrackingEvents_P0] AS [se] WITH(NOLOCK)
