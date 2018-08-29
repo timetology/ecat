@@ -1,4 +1,0 @@
---Agent List
-select mn.MachineName, mn.Version, mn.LastScanUTCTime, mn.offline, mn.lastseen, mn.RemoteIp, mn.LocalIp, mn.InstallUTCTime, mn.OperatingSystem
- from uvw_machines as mn
- where mn.MarkedAsDeleted = 0
