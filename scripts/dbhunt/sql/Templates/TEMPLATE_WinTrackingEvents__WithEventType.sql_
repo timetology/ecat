@@ -2,7 +2,7 @@
 
 SELECT  	mn.MachineName,
 		ad.Description as AdminStatus,
-		mn.Comment,
+		mai.Comment,
 		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
 		CASE 
 			WHEN SE.BehaviorFileOpenPhysicalDrive = 1 THEN 'OpenPhysicalDrive'
@@ -46,62 +46,12 @@ FROM
 	--INNER JOIN [dbo].[LinkedServers] AS [ls] WITH(NOLOCK) ON [ls].[PK_LinkedServers] = [mn].[FK_LinkedServers] 
 	INNER JOIN [dbo].[LaunchArguments] AS [la] WITH(NOLOCK) ON [la].[PK_LaunchArguments] = [se].[FK_LaunchArguments__SourceCommandLine]
    	INNER JOIN [dbo].[paths] as [pa] with(NOLOCK) on [mp].[FK_Paths] = [pa].[PK_Paths]
-   	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mn].[FK_AdminStatus]
+	INNER JOIN  [dbo.MachineAdminInfo AS mai WITH(NOLOCK) ON [mn].[PK_Machines] = [mai].[FK_Machines]
+   	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mai].[FK_AdminStatus]
 WHERE 
 
 se.LaunchArguments_Target LIKE N'%%'
 
-UNION 
-SELECT  	mn.MachineName,
-		ad.Description as AdminStatus,
-		mn.Comment,
-		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
-		CASE 
-			WHEN SE.BehaviorFileOpenPhysicalDrive = 1 THEN 'OpenPhysicalDrive'
-			WHEN SE.BehaviorFileReadDocument = 1 THEN 'ReadDocument'
-			WHEN SE.BehaviorFileRenameToExecutable = 1 OR SE.BehaviorFileWriteExecutable = 1 THEN 'WriteExecutable'
-			WHEN SE.BehaviorProcessCreateProcess = 1 THEN 'CreateProcess'
-			WHEN SE.BehaviorProcessCreateRemoteThread = 1 THEN 'CreateRemoteThread'
-			WHEN SE.BehaviorProcessOpenOSProcess = 1 THEN 'OpenOSProcess'
-			WHEN SE.BehaviorProcessOpenProcess = 1 THEN 'OpenProcess'
-			WHEN SE.BehaviorFileSelfDeleteExecutable = 1 THEN 'SelfDelete'
-			WHEN SE.BehaviorFileDeleteExecutable = 1 THEN 'DeleteExecutable'
-			WHEN SE.BehaviorRegistryModifyBadCertificateWarningSetting = 1 THEN 'ModifyBadCertificateWarningSetting'
-			WHEN SE.BehaviorRegistryModifyFirewallPolicy = 1 THEN 'ModifyFirewallPolicy'
-			WHEN SE.BehaviorRegistryModifyInternetZoneSettings = 1 THEN 'ModifyInternetZoneSettings'
-			WHEN SE.BehaviorRegistryModifyIntranetZoneBrowsingNotificationSetting = 1 THEN 'ModifyIntranetZoneBrowsingNotificationSetting'
-			WHEN SE.BehaviorRegistryModifyLUASetting = 1 THEN 'ModifyLUASetting'
-			WHEN SE.BehaviorRegistryModifyRegistryEditorSetting = 1 THEN 'ModifyRegistryEditorSetting'
-			WHEN SE.BehaviorRegistryModifyRunKey = 1 THEN 'ModifyRunKey '
-			WHEN SE.BehaviorRegistryModifySecurityCenterConfiguration = 1 THEN 'ModifySecurityCenterConfiguration'
-			WHEN SE.BehaviorRegistryModifyServicesImagePath = 1 THEN 'ModifyServicesImagePath'
-			WHEN SE.BehaviorRegistryModifyTaskManagerSetting = 1 THEN 'ModifyTaskManagerSetting'
-			WHEN SE.BehaviorRegistryModifyWindowsSystemPolicy = 1 THEN 'ModifyWindowsSystemPolicy'
-			WHEN SE.BehaviorRegistryModifyZoneCrossingWarningSetting = 1 THEN 'ModifyZoneCrossingWarningSetting'
-			WHEN SE.BehaviorFileBlockedDeleted = 1 THEN 'FileBlockedAAndDeleted'
-		END AS EventType,
-		pa.Path as 'SourcePath', 
-		fn.Filename as 'SourceFile', 
-		se.Path_Target, 
-		se.FileName_Target, 
-		se.LaunchArguments_Target, 
-		la.LaunchArguments as 'SourceArguments',
-		se.Username
-FROM
-	--[dbo].[WinTrackingEventsCache] AS [se] WITH(NOLOCK)
-	--[dbo].[WinTrackingEvents_P0] AS [se] WITH(NOLOCK)
-	[dbo].[WinTrackingEvents_P1] AS [se] WITH(NOLOCK)
-	INNER JOIN [dbo].[MachineModulePaths] AS [mp] WITH(NOLOCK) ON ([mp].[PK_MachineModulePaths] = [se].[FK_MachineModulePaths])
-	--INNER JOIN [dbo].[Modules] AS [mo] WITH(NOLOCK) ON ([mo].[PK_Modules] = [mp].[FK_Modules])
-	INNER JOIN [dbo].[FileNames] AS [fn] WITH(NOLOCK) ON ([fn].[PK_FileNames] = [mp].[FK_FileNames])
-	INNER JOIN [dbo].[machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [se].[FK_Machines]
-	--INNER JOIN [dbo].[LinkedServers] AS [ls] WITH(NOLOCK) ON [ls].[PK_LinkedServers] = [mn].[FK_LinkedServers] 
-	INNER JOIN [dbo].[LaunchArguments] AS [la] WITH(NOLOCK) ON [la].[PK_LaunchArguments] = [se].[FK_LaunchArguments__SourceCommandLine]
-    	INNER JOIN [dbo].[paths] as [pa] with(NOLOCK) on [mp].[FK_Paths] = [pa].[PK_Paths]
-	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mn].[FK_AdminStatus]
-WHERE 
-
-se.LaunchArguments_Target LIKE N'%%'
 
 ORDER BY se.EventUTCTime DESC
 OPTION (RECOMPILE);
