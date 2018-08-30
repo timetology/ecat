@@ -1,0 +1,4 @@
+--/*
+	EventUTCTime >= DATEADD(DAY, -10, GETUTCDATE()) 			--10 days
+	--AND EventUTCTime <= GETUTCDATE()							
+--*/
