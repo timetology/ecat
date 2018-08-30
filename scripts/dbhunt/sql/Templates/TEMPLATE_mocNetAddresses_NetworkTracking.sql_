@@ -1,7 +1,7 @@
 SELECT 
 mn.MachineName, 
 ad.Description as AdminStatus,
-mn.Comment,
+mai.Comment,
 CONVERT(VARCHAR, na.FirstConnectionUTC,120) AS FirstConnectionUTC, 
 CONVERT(VARCHAR, na.LastConnectionUTC,120) AS LastConnectionUTC, 
 pn.Filename as ProcessFilename, 
@@ -20,5 +20,6 @@ FROM
 	LEFT JOIN [dbo].[Filenames] AS [pn] WITH(NOLOCK) ON ([pn].[PK_FileNames] = [na].[FK_FileNames__Process])
 	LEFT JOIN [dbo].[Domains] AS [dom]  WITH(NOLOCK) ON ([dom].[PK_Domains] = [na].[FK_Domains__DomainHost])
 	LEFT JOIN [dbo].[LaunchArguments] as [sla] WITH(NOLOCK) ON ([sla].[PK_LaunchArguments] = [na].[FK_LaunchArguments])
-	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mn].[FK_AdminStatus]
+	INNER JOIN  [dbo.MachineAdminInfo AS mai WITH(NOLOCK) ON [mn].[PK_Machines] = [mai].[FK_Machines]
+   	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mai].[FK_AdminStatus]
 WHERE
