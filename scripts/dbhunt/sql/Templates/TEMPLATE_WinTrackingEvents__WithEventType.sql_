@@ -4,13 +4,6 @@ SELECT  	mn.MachineName,
 		ad.Description as AdminStatus,
 		mn.Comment,
 		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
-		pa.Path as 'SourcePath', 
-		fn.Filename as 'SourceFile', 
-		se.Path_Target, 
-		se.FileName_Target, 
-		se.LaunchArguments_Target, 
-		la.LaunchArguments as 'SourceArguments',
-		se.Username,
 		CASE 
 			WHEN SE.BehaviorFileOpenPhysicalDrive = 1 THEN 'OpenPhysicalDrive'
 			WHEN SE.BehaviorFileReadDocument = 1 THEN 'ReadDocument'
@@ -34,7 +27,14 @@ SELECT  	mn.MachineName,
 			WHEN SE.BehaviorRegistryModifyWindowsSystemPolicy = 1 THEN 'ModifyWindowsSystemPolicy'
 			WHEN SE.BehaviorRegistryModifyZoneCrossingWarningSetting = 1 THEN 'ModifyZoneCrossingWarningSetting'
 			WHEN SE.BehaviorFileBlockedDeleted = 1 THEN 'FileBlockedAAndDeleted'
-		END AS EventType
+		END AS EventType,
+		pa.Path as 'SourcePath', 
+		fn.Filename as 'SourceFile', 
+		se.Path_Target, 
+		se.FileName_Target, 
+		se.LaunchArguments_Target, 
+		la.LaunchArguments as 'SourceArguments',
+		se.Username
 FROM
 	--[dbo].[WinTrackingEventsCache] AS [se] WITH(NOLOCK)
 	[dbo].[WinTrackingEvents_P0] AS [se] WITH(NOLOCK)
@@ -55,13 +55,6 @@ SELECT  	mn.MachineName,
 		ad.Description as AdminStatus,
 		mn.Comment,
 		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
-		pa.Path as 'SourcePath', 
-		fn.Filename as 'SourceFile', 
-		se.Path_Target, 
-		se.FileName_Target, 
-		se.LaunchArguments_Target, 
-		la.LaunchArguments as 'SourceArguments',
-		se.Username,
 		CASE 
 			WHEN SE.BehaviorFileOpenPhysicalDrive = 1 THEN 'OpenPhysicalDrive'
 			WHEN SE.BehaviorFileReadDocument = 1 THEN 'ReadDocument'
@@ -85,7 +78,14 @@ SELECT  	mn.MachineName,
 			WHEN SE.BehaviorRegistryModifyWindowsSystemPolicy = 1 THEN 'ModifyWindowsSystemPolicy'
 			WHEN SE.BehaviorRegistryModifyZoneCrossingWarningSetting = 1 THEN 'ModifyZoneCrossingWarningSetting'
 			WHEN SE.BehaviorFileBlockedDeleted = 1 THEN 'FileBlockedAAndDeleted'
-		END AS EventType
+		END AS EventType,
+		pa.Path as 'SourcePath', 
+		fn.Filename as 'SourceFile', 
+		se.Path_Target, 
+		se.FileName_Target, 
+		se.LaunchArguments_Target, 
+		la.LaunchArguments as 'SourceArguments',
+		se.Username
 FROM
 	--[dbo].[WinTrackingEventsCache] AS [se] WITH(NOLOCK)
 	--[dbo].[WinTrackingEvents_P0] AS [se] WITH(NOLOCK)
