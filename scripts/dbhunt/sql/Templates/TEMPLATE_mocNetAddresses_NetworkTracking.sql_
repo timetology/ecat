@@ -10,7 +10,10 @@ na.Port,
 dom.Domain, 
 na.IP, 
 na.UserAgent, 
-LaunchArguments
+LaunchArguments,
+na.ConnectCount,
+na.TotalSent,
+na.TotalReceived
 
 FROM
     [dbo].[mocNetAddresses] AS [na] WITH(NOLOCK)
