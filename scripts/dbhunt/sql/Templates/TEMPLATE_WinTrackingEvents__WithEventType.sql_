@@ -1,6 +1,8 @@
 --TEMPLATE
 
-SELECT  mn.MachineName, 
+SELECT  	mn.MachineName,
+		ad.Description as AdminStatus,
+		mn.Comment,
 		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
 		pa.Path as 'SourcePath', 
 		fn.Filename as 'SourceFile', 
@@ -93,7 +95,8 @@ FROM
 	INNER JOIN [dbo].[machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [se].[FK_Machines]
 	--INNER JOIN [dbo].[LinkedServers] AS [ls] WITH(NOLOCK) ON [ls].[PK_LinkedServers] = [mn].[FK_LinkedServers] 
 	INNER JOIN [dbo].[LaunchArguments] AS [la] WITH(NOLOCK) ON [la].[PK_LaunchArguments] = [se].[FK_LaunchArguments__SourceCommandLine]
-    INNER JOIN [dbo].[paths] as [pa] with(NOLOCK) on [mp].[FK_Paths] = [pa].[PK_Paths]
+    	INNER JOIN [dbo].[paths] as [pa] with(NOLOCK) on [mp].[FK_Paths] = [pa].[PK_Paths]
+    	INNER JOIN [dbo].[AdminStatus] AS [ad] WITH(NOLOCK) ON [ad].[PK_Adminstatus] = [mn].[FK_AdminStatus]
 WHERE 
 
 se.LaunchArguments_Target LIKE N'%%'
