@@ -2,7 +2,7 @@
 #
 # Author: RSA IR <firstresponse@rsa.com>
 #
-# Description: RSA Download Files from Windows Hosts via NetWitness Endpoint (ECAT)
+# Description: RSA Download Files from Linux Hosts via NetWitness Endpoint (ECAT)
 #
 # Notes: Requires permission to issue exec commands (GRANT EXECUTE ON dbo.usp_InsertMachineCommand TO [userName])
 #
