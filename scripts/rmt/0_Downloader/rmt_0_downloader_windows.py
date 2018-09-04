@@ -145,7 +145,7 @@ def main():
 				sql = sql + "declare @p5 dbo.uty_MachineCommandParams\n"
 				sql = sql + "insert into @p5 values(N'Path',N'" + artifact + "')\n"
 				sql = sql + "insert into @p5 values(N'maxfiles',N'" + args.maxfiles + "')\n"
-				sql = sql + "exec dbo.usp_InsertMachineCommand @MachinesPKList=@p1,@Type=256,@Comment=N'Download RSA File Download',@IsAutomatic=0,@CommandParams=@p5"
+				sql = sql + "exec dbo.usp_InsertMachineCommand @MachinesPKList=@p1,@Type=256,@Comment=N'Download RSA rmt_0_downloader_windows',@IsAutomatic=0,@CommandParams=@p5"
 
 				try:
 					cursor.execute(sql)
