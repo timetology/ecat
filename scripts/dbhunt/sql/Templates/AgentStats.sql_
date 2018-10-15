@@ -1,5 +1,5 @@
 --Agent Count
-select count(distinct machinename) as 'Agent Count'
+select count(machinename) as 'Agent Count'
 FROM dbo.Machines as mn
 where mn.MarkedAsDeleted = 0
 
@@ -8,23 +8,23 @@ SELECT OSName, OSType, COUNT(*) AS Count  FROM (SELECT
   CASE        
             WHEN OperatingSystem LIKE N'%server%' AND FK_OSTypes = 1 AND MarkedAsDeleted = 0 THEN 'Server'
             WHEN FK_OSTypes = 1 AND MarkedAsDeleted = 0 THEN 'Workstation'
-            WHEN MarkedAsDeleted = 1 THEN 'Deleted'
+            --WHEN MarkedAsDeleted = 1 THEN 'Deleted'
             ELSE  'Other'
   END AS OSType, OSName
   FROM [dbo].[Machines] as mn
-  INNER  JOIN [dbo].[OSTypes] as os ON mn.FK_OSTypes = os.PK_OSTypes) as t
+  left  JOIN [dbo].[OSTypes] as os ON mn.FK_OSTypes = os.PK_OSTypes) as t
   GROUP BY OSType, OSName
   ORDER BY Count DESC
 
   --Agent Count by OS
   SELECT  OperatingSystem, COUNT(*) AS Count
   FROM [dbo].[Machines] as mn
-  WHERE mn.OperatingSystem != '' and mn.MarkedAsDeleted = 0
+  WHERE mn.MarkedAsDeleted = 0
   GROUP BY OperatingSystem
   ORDER BY Count DESC
 
 --Agent Count by Version
-  SELECT  mn.version, COUNT(*) AS Count
+  SELECT  mn.version as 'Version', COUNT(*) AS Count
   FROM [dbo].[Machines] as mn
   WHERE mn.MarkedAsDeleted = 0
   GROUP BY mn.version
