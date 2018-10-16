@@ -37,6 +37,13 @@ from uvw_machines
 where DriverError <> 0
 */
 
+/*
+--Driver Errors
+select MachineName, OperatingSystem,Version,convert(binary(4),DriverErrorCode) AS DriverError, InstallUTCTime
+from [dbo].uvw_machines
+DriverErrorCode <> 0
+*/
+
   -- Machine Counts by Admin Status
 SELECT ad.Description as AdminStatus, COUNT(ad.Description) AS Count 
 from dbo.uvw_Machines as ma
