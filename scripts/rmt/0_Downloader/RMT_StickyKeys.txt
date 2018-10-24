@@ -6,3 +6,5 @@ c:\windows\system32\osk.exe
 c:\Windows\SysWOW64\osk.exe
 c:\windows\system32\magnify.exe
 c:\Windows\SysWOW64\magnify.exe
+C:\Windows\System32\narrator.exe
+c:\Windows\SysWOW64\narrator.exe
