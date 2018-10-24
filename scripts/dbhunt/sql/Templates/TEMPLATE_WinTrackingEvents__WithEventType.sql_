@@ -1,6 +1,7 @@
 
 SELECT  
 		mn.MachineName,
+		mn.OperatingSystem,
 		ad.Description as AdminStatus,
 		mai.Comment,
 		CONVERT(VARCHAR, SE.EventUTCTime,120) AS eventutctime, 
