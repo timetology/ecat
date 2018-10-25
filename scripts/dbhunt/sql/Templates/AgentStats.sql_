@@ -41,6 +41,7 @@ where DriverError <> 0
 --Driver Errors
 select MachineName, OperatingSystem,Version,convert(binary(4),DriverErrorCode) AS DriverError, InstallUTCTime
 from [dbo].uvw_machines
+where 
 DriverErrorCode <> 0
 */
 
