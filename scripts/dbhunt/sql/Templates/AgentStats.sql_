@@ -156,3 +156,18 @@ where BiasStatuscomment <> ''
 order by status
 
 */
+
+-- Tracking Data Check
+/*
+SELECT DISTINCT ma.machinename, ma.operatingsystem, mos.connectionUTCtime
+From dbo.machines as ma with(nolock)
+LEFT JOIN machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
+
+WHER
+Ma.MarkedAsDeleted = 0 
+AND ma.pk_machines NOT IN (SELECT wte.fk_machines FROM 
+				(SELECT * FROM dbo.WinTrackingEvents_P0
+					UNION ALL 
+				SELECT * FROM dbo.WinTrackingEvents_P1) wte)
+ORDER BY ma.machinename
+*/
