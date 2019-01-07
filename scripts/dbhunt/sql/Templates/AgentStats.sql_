@@ -158,8 +158,8 @@ order by status
 */
 
 -- Tracking Data Check for Windows Systems
-/*
-SELECT count(ma.machinename) as 'Systems Without Tracking Data'
+
+SELECT count(ma.machinename) as 'Systems with zero Tracking Data'
 FROM dbo.machines as ma with(nolock)
 LEFT JOIN machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
 
@@ -170,7 +170,7 @@ AND ma.pk_machines NOT IN (SELECT wte.fk_machines FROM
 				(SELECT * FROM dbo.WinTrackingEvents_P0
 					UNION ALL 
 				SELECT * FROM dbo.WinTrackingEvents_P1) wte)
-*/
+
 /*
 SELECT DISTINCT ma.machinename, ma.operatingsystem, mos.StateUTCtime as LastSeen, convert(binary(4), ma.DriverErrorCode) as DriverError
 FROM dbo.machines as ma with(nolock)
