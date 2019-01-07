@@ -188,7 +188,7 @@ ORDER BY LastSeen DESC
 
 --Last Tracking Data entry older than 14 days from Last Seen for Windows Systems
 /*
-SELECT DISTINCT ma.machinename, max(wte.eventUTCtime) as 'Last EventUTCTime', mo.stateutctime as 'Last Seen', DATEDIFF(day,Max(wte.eventUTCTime), mos.StateUTCTime as 'Day Diff'
+SELECT DISTINCT ma.machinename, max(wte.eventUTCtime) as 'Last EventUTCTime', mos.stateutctime as 'Last Seen', DATEDIFF(day, max(wte.eventUTCTime), mos.StateUTCTime) as 'Day Diff'
 
 from (select fk_machines, eventUTCTime from dbo.WinTrackingEvents_P0
 	union all select fk_machines, eventUTCTime from dbo.WinTrackingEvents_P1)wte
