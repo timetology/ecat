@@ -190,12 +190,12 @@ ORDER BY LastSeen DESC
 /*
 SELECT DISTINCT ma.machinename, max(wte.eventUTCtime) as 'Last EventUTCTime', mos.stateutctime as 'Last Seen', DATEDIFF(day, max(wte.eventUTCTime), mos.StateUTCTime) as 'Day Diff'
 
-from (select fk_machines, eventUTCTime from dbo.WinTrackingEvents_P0
+FROM (select fk_machines, eventUTCTime from dbo.WinTrackingEvents_P0
 	union all select fk_machines, eventUTCTime from dbo.WinTrackingEvents_P1)wte
-left join dbo.machines as ma with(nolock) on(ma.PK_Machines = wte.fk_machines)
-left join machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
+INNER JOIN dbo.machines as ma with(nolock) on(ma.PK_Machines = wte.fk_machines)
+INNER JOIN dbo.machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
 
-group by machinename, mos.stateUTCtime
+group by ma.machinename, mos.stateUTCtime
 having max(wte.eventUTCtime) < DATEADD(DAY, -14, mos.stateUTCtime)
 order by 'Last EventUTCTime' desc
 */
