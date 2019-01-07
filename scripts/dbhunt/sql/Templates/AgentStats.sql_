@@ -183,5 +183,5 @@ AND ma.pk_machines NOT IN (SELECT wte.fk_machines FROM
 				(SELECT * FROM dbo.WinTrackingEvents_P0
 					UNION ALL 
 				SELECT * FROM dbo.WinTrackingEvents_P1) wte)
-ORDER BY LastSeen ASC
+ORDER BY LastSeen DESC
 */
