@@ -185,3 +185,19 @@ AND ma.pk_machines NOT IN (SELECT wte.fk_machines FROM
 				SELECT * FROM dbo.WinTrackingEvents_P1) wte)
 ORDER BY LastSeen DESC
 */
+
+--Tracking Data older than 14 days for Windows Systems
+
+-- Data over 14 days
+/*
+select distinct machinename, max(wte.eventUTCtime) as time, mo.stateutctime
+
+from (select * from dbo.WinTrackingEvents_P0
+union all select * from dbo.WinTrackingEvents_P1)wte
+left join dbo.machines as ma with(nolock) on(ma.PK_Machines = wte.fk_machines)
+left join machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
+
+group by machinename, mos.stateUTCtime
+having max(wte.eventUTCtime) < DATEADD(DAY, -14, mos.stateUTCtime)
+order by time desc
+*/
