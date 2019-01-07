@@ -172,7 +172,7 @@ AND ma.pk_machines NOT IN (SELECT wte.fk_machines FROM
 				SELECT * FROM dbo.WinTrackingEvents_P1) wte)
 
 /*
-SELECT DISTINCT ma.machinename, ma.operatingsystem, mos.StateUTCtime as LastSeen, ma.InstallUTCTime, convert(binary(4), ma.DriverErrorCode) as DriverError
+SELECT DISTINCT ma.machinename, ma.operatingsystem, mos.StateUTCtime as LastSeen, ma.InstallUTCTime, DATEDIFF(day, ma.InstallUTCTime, mos.StateUTCTime) as 'Day Diff', convert(binary(4), ma.DriverErrorCode) as DriverError
 FROM dbo.machines as ma with(nolock)
 LEFT JOIN machineonlinestate as mos with(nolock) on (mos.fk_machines = ma.pk_machines)
 
