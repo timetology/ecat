@@ -8,3 +8,7 @@ c:\windows\system32\magnify.exe
 c:\Windows\SysWOW64\magnify.exe
 C:\Windows\System32\narrator.exe
 c:\Windows\SysWOW64\narrator.exe
+C:\Windows\System32\DisplaySwitch.exe
+c:\Windows\SysWOW64\DisplaySwitch.exe
+C:\Windows\System32\AtBroker.exe
+c:\Windows\SysWOW64\AtBroker.exe
