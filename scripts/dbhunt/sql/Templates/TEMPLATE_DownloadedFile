@@ -13,11 +13,12 @@ SELECT
 	--,mo.FirstSeenUTCDate
 	,mo.PEUTCTimeDateStamp
 	,mo.Description
-  ,convert(binary(16),mo.HashMD5) AS MD5
-  ,convert(binary(20),mo.HashSHA1) AS SHA1
-  ,convert(binary(32),mo.HashSHA256) AS SHA256 
+  	,convert(binary(16),mo.HashMD5) AS MD5
+  	,convert(binary(20),mo.HashSHA1) AS SHA1
+  	,convert(binary(32),mo.HashSHA256) AS SHA256 
 	--,mo.HashMD5
 	--,nmo.HashMD5
+	--,convert(binary(16),nmo.HashMD5) AS NonModuleMD5
   
 FROM uvw_MachineDownloaded as md
 LEFT JOIN [dbo].[Machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [md].[FK_Machines]
