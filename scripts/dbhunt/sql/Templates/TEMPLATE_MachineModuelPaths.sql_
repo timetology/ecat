@@ -5,7 +5,7 @@ mn.machinename
 ,ofn.filename as 'OriginalFilename'
 ,pa.path
 ,mo.Description
-,mo.HashMD5
+,convert(binary(16),mo.HashMD5) AS MD5
 ,mo.size
 ,mo.DaysSinceCompilation
 ,mo.DaysSinceCreation
