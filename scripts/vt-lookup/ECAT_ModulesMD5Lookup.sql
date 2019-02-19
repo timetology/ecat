@@ -1,4 +1,4 @@
-SELECT [mo].HashMD5 
+SELECT convert(binary(16),mo.HashMD5) AS HashMD5 
       ,CASE 
         WHEN [bs].BiasStatus = -2 THEN 'Blacklisted'
         WHEN [bs].BiasStatus = 0 THEN 'Neutral'
@@ -18,7 +18,9 @@ SELECT [mo].HashMD5
           WHERE ([mm].[FK_Modules] = [mo].[PK_Modules]) 
           For XML PATH ('')
           ), 2, 1000) [Machines]
+		, CONVERT(VARCHAR, mp.DownloadedUTCTime,120) AS DownloadedUTCTime
 --      ,[mo].HashSHA256
+
 
       ,'"'+[mp].RemotePath+'"' As RemotePath
       ,'"'+[mp].RemoteFileName+'"' As RemoteFilename
@@ -33,4 +35,6 @@ SELECT [mo].HashMD5
         mp.DownloadedUTCTime IS NOT NULL AND
         mp.GlobalMachineCount < 20 AND
         [mo].PK_Modules > 0 
-  ORDER BY [mo].PK_Modules DESC
+  
+ -- ORDER BY [mo].PK_Modules DESC
+    ORDER BY mp.DownloadedUTCTime DESC
