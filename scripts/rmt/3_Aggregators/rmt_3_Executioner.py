@@ -9,7 +9,12 @@
 # Further USERCLASS.DAT Parsing
 # Superfetch?
 # SRUM?
-# Speed up amcache parsing
+# Speed up amcache parsing - amcache may be parsing all
+# Return fields from amcache
+#| 3     | Language code
+#| 0     | Product Name    
+#| 1     | Company Name    
+#| c     | File Description
 #
 # Change Log
 # .1 3May2016 
