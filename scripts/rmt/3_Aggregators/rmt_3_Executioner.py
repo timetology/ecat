@@ -803,12 +803,6 @@ def main():
 
 	if args.rfc:
 		Process_RecentFileCache(args.rfc)
-
-	if args.amcache:
-		#OLD WAY
-		#Process_Amcache(args)
-		#New way Using Ballenthin's amcache.py
-		Parse_Amcache(args.amcache)
 		
 	if args.jobs:
 		Process_Jobs(args.jobs)
@@ -821,6 +815,11 @@ def main():
 		
 	if args.muicache:
 		Process_MuiCache(args.muicache)
-
+	
+	if args.amcache:
+		#OLD WAY
+		#Process_Amcache(args)
+		#New way Using Ballenthin's amcache.py
+		Parse_Amcache(args.amcache)
 if __name__ == '__main__':
 	main()
