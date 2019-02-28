@@ -7,7 +7,6 @@
 # Cleanup? (delete file after parsing?)
 # Further NTUSER.DAT Parsing.
 # Further USERCLASS.DAT Parsing
-# Rework csv format (headings/columns)
 # Superfetch?
 # SRUM?
 # Speed up amcache parsing
@@ -33,6 +32,8 @@
 #	Change overwrite behavior to be default and append to be option.
 # .9 05April2018
 # 	Fixed issues with -m Muicache Parsing
+# .10 28/Feb/2019
+#	CSV Headers Standardized, Also ensuring that data does not have extra ',' in them to throw off csv formatting.
 
 from __future__ import unicode_literals
 
@@ -336,7 +337,6 @@ def Process_Amcache(args):
 		if g_debug:
 			print('[+] Processing file: {} ==> {}'.format(fname, hostname))
 		try:
-
 			amcache_entries = amcache_retrieve_results(hostname, Hive_Amcache)
 		except:
 			print('[!] Unable to process Amcache volume: {}'.format(fname))
@@ -345,7 +345,8 @@ def Process_Amcache(args):
 			print('{:.1%} Complete'.format(float(counter) / float(total_files)))
 			#print amcache_entries
 			for entry in amcache_entries:
-					entry = u','.join(str(i).decode('utf-8') for i in entry)
+				print entry
+				entry = u','.join(str(i).decode('utf-8') for i in entry)
 			write_amcache(amcache_entries)
 
 def readRFC(hostname, fname):
@@ -369,7 +370,8 @@ def readRFC(hostname, fname):
 			entry = fh.read(entry_len)
 			#hostname, Last Modified, Last Update, path, File Size, Exec Flag, sha1, source_file
 			#return('{},,,{},,,,recentfilecache'.format(hostname, entry.decode('utf-16')))
-			write_line('{},,,{},,,,recentfilecache'.format(hostname, entry.decode('utf-16')))
+			
+			write_line('{},,,{},,,,recentfilecache'.format(hostname, entry.decode('utf-16').replace(',','')))
 			fh.read(2) # Disregard last two unicode null terminators as they break in decode
 	fh.close()
 
@@ -496,7 +498,7 @@ def Process_Jobs(path):
 						if g_debug:
 							print('[!] Error. Hostname not found in filename.')
 
-					line = hostname + ',' + str(theJob.RunDate) + ',' + ',' + str(theJob.Name) + ',,,,' + 'job'
+					line = hostname + ',' + str(theJob.RunDate) + ',' + ',' + str(theJob.Name).replace(',','') + ',,,,' + 'job'
 					write_line(line)
 
 					#write additional job parsing to another file
@@ -560,7 +562,7 @@ def Process_Prefetch(path):
 							FilePath = resource
 					#'Hostname,Time Stamp,Last Update,File Path,File Size,Shimcache Exec Flag,SHA1 Hash,Data Source\n')
 					#print "{},{},{},{},{}".format(p.timestamps[0], p.mftSeqNumber, p.mftRecordNumber, p.executableName, p.runCount)
-					line = "{},{},{},{},{},{},{},{}".format(hostname, p.timestamps[0], "", FilePath, "", "", "", "prefetch")
+					line = "{},{},{},{},{},{},{},{}".format(hostname, p.timestamps[0], "", FilePath.replace(',',''), "", "", "", "prefetch")
 					#line = hostname + ',' + str(theJob.RunDate) + ',' + ',' + str(theJob.Name) + ',,,,' + 'job'
 					write_line(line)
 def Parse_Amcache(path):
@@ -625,9 +627,14 @@ def Parse_Amcache(path):
 						#print type(ts)
 						#print ts.strftime("%B %d, %Y")
 						#timestamp = ts.strftime(DATE_ISO)
-						line = "{},{},{},{},{},{},{},{}".format(hostname, ts.strftime(DATE_ISO), "", e.entry.path, "", "", e.entry.sha1, "amcache")
+						line = "{},{},{},{},{},{},{},{}".format(hostname, ts.strftime(DATE_ISO), "", e.entry.path.replace(',',''), "", "", e.entry.sha1, "amcache")
 						#line = hostname + ts.strftime(DATE_ISO) + e.entry.path + e.entry.sha1
-						#print line
+						#if line.count(',') > 7:
+						#	temp = line.split(',')
+						#	end = line.count(',')
+						#	#print(temp[0] + ',' + temp[1] + ',' + temp[2] + ',' + "".join(temp[3:end-4]) + ',' + temp[end-3] + ',' + temp[end-2] + ',' + temp[end-1] + ',' + temp[end])
+						#	line = temp[0] + ',' + temp[1] + ',' + temp[2] + ',' + "".join(temp[3:end-4]) + ',' + temp[end-3] + ',' + temp[end-2] + ',' + temp[end-1] + ',' + temp[end]
+						#	#print line
 						write_line(line)
 			counter += 1
 			print('{:.1%} Complete'.format(float(counter) / float(total_files)))
@@ -678,10 +685,11 @@ def Process_UserAssist(path):
 					
 					try:
 						#print last_write.strftime(DATE_ISO)
-						line = "{},{},{},{},{},{},{},{}".format(hostname, windate.strftime(DATE_ISO), last_write.strftime(DATE_ISO), data, "", "", "", "userassist")
+						line = "{},{},{},{},{},{},{},{}".format(hostname, windate.strftime(DATE_ISO), last_write.strftime(DATE_ISO), data.replace(',',''), "", "", "", "userassist")
 					except:
-						line = "{},{},{},{},{},{},{},{}".format(hostname, "", last_write.strftime(DATE_ISO), data, "", "", "", "userassist")
-					#line = hostname + ',' + str(theJob.RunDate) + ',' + ',' + str(theJob.Name) + ',,,,' + 'job'
+						line = "{},{},{},{},{},{},{},{}".format(hostname, "", last_write.strftime(DATE_ISO), data.replace(',',''), "", "", "", "userassist")
+
+					
 					write_line(line)
 					#print windate.strftime("%Y-%m-%d %H:%M:%S")
 					#datetime.strptime(date_string, format)
@@ -720,7 +728,7 @@ def Process_MuiCache(path):
 						lastwrite = e[0]
 						name = e[1]
 						#data = e[2]
-						line = "{},{},{},{},{},{},{},{}".format(hostname, "", lastwrite.strftime(DATE_ISO), name, "", "", "", "muicache")
+						line = "{},{},{},{},{},{},{},{}".format(hostname, "", lastwrite.strftime(DATE_ISO), name.replace(',',''), "", "", "", "muicache")
 						write_line(line)
 			elif fname.lower().startswith('usrclass'):
 				try:
@@ -733,7 +741,7 @@ def Process_MuiCache(path):
 						lastwrite = e[0]
 						name = e[1]
 						#data = e[2]
-						line = "{},{},{},{},{},{},{},{}".format(hostname, "", lastwrite.strftime(DATE_ISO), name, "", "", "", "muicache")
+						line = "{},{},{},{},{},{},{},{}".format(hostname, lastwrite.strftime(DATE_ISO), "", name.replace(',',''), "", "", "", "muicache")
 						write_line(line)
 def main():
 	global g_outputfile
@@ -794,7 +802,8 @@ def main():
 		except IOError as err:
 			print('[-] Error opening output file: {}'.format(err))
 			return
-		fh.write('Hostname,Last Write, Key Name, Name, Value\n')
+		#fh.write('Hostname,Last Write, Key Name, Name, Value\n')
+		fh.write('Hostname,Last Mod / Write,Key Name or Last Update,Path / FileName,Size,Shimcache Execution Flag,Amcache SHA1,Source\n')
 		fh.close()
 
 	#Parse Things
@@ -816,10 +825,12 @@ def main():
 	if args.muicache:
 		Process_MuiCache(args.muicache)
 	
+	#AmCache Last because it takes forever.
 	if args.amcache:
 		#OLD WAY
 		#Process_Amcache(args)
 		#New way Using Ballenthin's amcache.py
 		Parse_Amcache(args.amcache)
+
 if __name__ == '__main__':
 	main()
