@@ -1,0 +1,6 @@
+# PowerShell v5 introduced in Windows 10
+# %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+# http://woshub.com/powershell-commands-history/
+# By default, the PowerShell in Windows 10 saves the last 4096 commands that are stored in a plain text file located in the profile of each user 
+# %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+# The history is stored separately for PowerShell and ISE.
