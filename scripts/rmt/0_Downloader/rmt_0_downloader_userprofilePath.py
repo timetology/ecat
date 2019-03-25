@@ -106,7 +106,7 @@ AND pa.path NOT LIKE N'HKEY_CURRENT_USER\%'"""
 				s = o[0].encode('ascii','ignore')
 				s = s.split('\\')
 #				dirlist.append(s[0] + '\\' + s[1] + '\\' + s[2] + '\\NTUSER.DAT')
-        dirlist.append(s[0] + '\\' + s[1] + '\\' + s[2] + args.filepath)
+				dirlist.append(s[0] + '\\' + s[1] + '\\' + s[2] + args.filepath)
 			dirlist = sorted(set(dirlist))
 			for i in dirlist:
 				if g_debug:
@@ -123,7 +123,7 @@ def main():
 	parser.add_argument('-p','--pass', dest='passwd', help='Password for SQL Database. (If user specified with no pass then you will be prompted for the pass)', metavar='<password>')
 	parser.add_argument('-s','--server', help='Hostname or IP for SQL Server. Default: localhost', metavar='<hostname or IP>', default='LOCALHOST')
 	parser.add_argument('-db','--database', help='ECAT database', metavar='<database>', default='ECAT$PRIMARY')
-  parser.add_argument('-f','--filepath', help='Filepath after %userprofile% e.g. for %userprofile%\Ntuser.dat '\ntuser.dat', required=True')
+	parser.add_argument('-f','--filepath', help='Filepath after %userprofile% e.g. for %userprofile%\Ntuser.dat '\ntuser.dat', required=True')
 	parser.add_argument('--debug', help='Enable Debug Messages', action='store_true', default=False)
 
 	args = parser.parse_args()
