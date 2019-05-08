@@ -1,0 +1,3 @@
+/var/log/audit/audit.log*
+/var/log/messages*
+/root/.bash_history
