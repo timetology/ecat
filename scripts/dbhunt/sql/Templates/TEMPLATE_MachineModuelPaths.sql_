@@ -8,20 +8,20 @@ mn.machinename
 ,convert(binary(16),mo.HashMD5) AS MD5
 ,mo.size
 ,mo.DaysSinceCompilation
-,mo.DaysSinceCreation
+--,mo.DaysSinceCreation
 ,mp.FileUTCTimeCreated
 ,mp.FileUTCTimeModified
 ,mo.NameImportedDlls
 ,mo.SectionsNames
 
 from dbo.MachineModulePaths as mp
-	INNER JOIN dbo.machines as mn with(nolock) on mn.pk_machines = mp.fk_machines
-	INNER JOIN dbo.filenames as sfn with(nolock) on sfn.pk_filenames = mp.fk_filenames
-	INNER JOIN dbo.modules as mo with(nolock) on mo.pk_modules = mp.fk_modules
-	INNER JOIN dbo.paths as pa with(nolock) on pa.pk_paths = mp.fk_paths
-	INNER JOIN dbo.filenames as ofn with(nolock) on ofn.pk_filenames = mo.fk_filenames__original
+	LEFT JOIN dbo.machines as mn with(nolock) on mn.pk_machines = mp.fk_machines
+	LEFT JOIN dbo.filenames as sfn with(nolock) on sfn.pk_filenames = mp.fk_filenames
+	LEFT JOIN dbo.modules as mo with(nolock) on mo.pk_modules = mp.fk_modules
+	LEFT JOIN dbo.paths as pa with(nolock) on pa.pk_paths = mp.fk_paths
+	LEFT JOIN dbo.filenames as ofn with(nolock) on ofn.pk_filenames = mo.fk_filenames__original
 	
 where
-	ofn.filename = N''
-	--OR sfn.filename = N''
-	--OR mo.descrtion = N''
+	ofn.filename LIKE N'%searchstring%'
+	OR sfn.filename LIKE N'%searchstring%'
+	OR mo.description LIKE N'%searchstring%'
