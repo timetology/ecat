@@ -13,6 +13,7 @@ mn.machinename
 ,mp.FileUTCTimeModified
 ,mo.NameImportedDlls
 ,mo.SectionsNames
+,fo.UserName
 
 from dbo.MachineModulePaths as mp
 	LEFT JOIN dbo.machines as mn with(nolock) on mn.pk_machines = mp.fk_machines
@@ -20,6 +21,7 @@ from dbo.MachineModulePaths as mp
 	LEFT JOIN dbo.modules as mo with(nolock) on mo.pk_modules = mp.fk_modules
 	LEFT JOIN dbo.paths as pa with(nolock) on pa.pk_paths = mp.fk_paths
 	LEFT JOIN dbo.filenames as ofn with(nolock) on ofn.pk_filenames = mo.fk_filenames__original
+	LEFT JOIN dbo.UserNames as fo with(nolock) on mp.FK_UserNames__FileOwner = fo.PK_UserNames
 	
 where
 	ofn.filename LIKE N'%searchstring%'
