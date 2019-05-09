@@ -1,13 +1,33 @@
-SELECT DISTINCT mn.MachineName, sn.ServiceName, la.LaunchArguments, pa2.Path, sfn.FileName
+SELECT distinct
+mn.MachineName
+, sn.ServiceName
+, la.LaunchArguments
+, pa2.Path
+, sfn.FileName
+, dn.ServiceName as "DisplayName"
+--, main.ServiceName as "Main"
+--, maind.ServiceName as "MainDescription"
+, un.UserName
+,mo.size
+,mo.DaysSinceCompilation
+,mp.FileUTCTimeCreated
+,mp.FileUTCTimeModified
 
 FROM
 
 	[dbo].[mocServices] AS [ms] WITH(NOLOCK)
-	INNER JOIN [dbo].[MachineModulePaths] AS [mp] WITH(NOLOCK) ON ([mp].[PK_MachineModulePaths] = [ms].[FK_MachineModulePaths])
-	INNER JOIN [dbo].[FileNames] AS [sfn] WITH(NOLOCK) ON ([sfn].[PK_FileNames] = [mp].[FK_FileNames])
-	INNER JOIN [dbo].[Paths] AS [pa2] WITH(NOLOCK) ON [pa2].[PK_Paths] = [mp].[FK_Paths]
-	INNER JOIN [dbo].[ServiceNames] AS [sn] WITH(NOLOCK) ON ([sn].[PK_ServiceNames] = [ms].[FK_ServiceNames])
-	INNER JOIN [dbo].[machines] AS [mn] WITH(NOLOCK) ON ([mn].[PK_Machines] = [ms].[FK_Machines])
-	INNER JOIN [dbo].[LaunchArguments] AS [la] WITH(NOLOCK) ON [la].[PK_LaunchArguments] = [ms].[FK_LaunchArguments]
+	LEFT JOIN [dbo].[MachineModulePaths] AS [mp] WITH(NOLOCK) ON ([mp].[PK_MachineModulePaths] = [ms].[FK_MachineModulePaths])
+	LEFT JOIN dbo.modules as mo with(nolock) on mo.pk_modules = mp.fk_modules
+	LEFT JOIN [dbo].[FileNames] AS [sfn] WITH(NOLOCK) ON ([sfn].[PK_FileNames] = [mp].[FK_FileNames])
+	LEFT JOIN [dbo].[Paths] AS [pa2] WITH(NOLOCK) ON [pa2].[PK_Paths] = [mp].[FK_Paths]
+	LEFT JOIN [dbo].[ServiceNames] AS [sn] WITH(NOLOCK) ON ([sn].[PK_ServiceNames] = [ms].[FK_ServiceNames])
+	LEFT JOIN [dbo].[ServiceNames] AS [dn] WITH(NOLOCK) ON ([sn].[PK_ServiceNames] = [ms].[FK_ServiceNames__DisplayName])
+	--LEFT JOIN [dbo].[ServiceNames] AS [main] WITH(NOLOCK) ON ([sn].[PK_ServiceNames] = [ms].[FK_ServiceNames__Main])
+	--LEFT JOIN [dbo].[ServiceNames] AS [maind] WITH(NOLOCK) ON ([sn].[PK_ServiceNames] = [ms].[FK_ServiceNames__MainDescription])
+	LEFT JOIN [dbo].[machines] AS [mn] WITH(NOLOCK) ON ([mn].[PK_Machines] = [ms].[FK_Machines])
+	LEFT JOIN [dbo].[LaunchArguments] AS [la] WITH(NOLOCK) ON [la].[PK_LaunchArguments] = [ms].[FK_LaunchArguments]
+	LEFT JOIN dbo.UserNames as un with(nolock) on un.PK_UserNames = ms.FK_UserNames
 	 
 WHERE
+
+mn.MachineName = ''
