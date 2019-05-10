@@ -2,3 +2,7 @@
 /var/log/messages*
 /root/.bash_history
 /var/log/secure
+/root/.ssh/known_hosts
+/var/log/wtmp
+/var/log/btmp
+/var/run/utmp
