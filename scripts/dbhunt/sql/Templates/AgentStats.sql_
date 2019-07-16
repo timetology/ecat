@@ -30,12 +30,10 @@ SELECT OSName, OSType, COUNT(*) AS Count  FROM (SELECT
   GROUP BY mn.version
   ORDER BY Count DESC
 
-/*
 --Machines with Kernel Driver Errors
-select count(DriverError) as Count
+select count(DriverErrorCode) as Count
 from uvw_machines
-where DriverError <> 0
-*/
+where DriverErrorCode <> 0
 
 /*
 --Driver Errors
