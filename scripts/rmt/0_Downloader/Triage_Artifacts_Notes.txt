@@ -41,3 +41,6 @@ System.Filename:~>
 
 Older than
 datemodified:< dd/mm/yy
+
+Implicit AND e.g.
+System.Filename:~<system_ datemodified:< 2018-01-01 
