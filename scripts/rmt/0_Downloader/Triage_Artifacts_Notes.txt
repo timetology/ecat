@@ -38,3 +38,6 @@ System.Filename:~=
 
 Ends with 
 System.Filename:~>
+
+Older than
+datemodified:< dd/mm/yy
