@@ -47,3 +47,35 @@ select t.comment, count(*) as 'count'
    group by t.comment
    having count(*) > 1
    order by 'count' desc
+
+--Machine Commands Dump (Audit Log)
+/*
+select 
+mn.MachineName
+,mc.CreateUTCTime
+,mc.ProcessUTCTime
+,CASE 
+        WHEN [Type] = 256 THEN 'File Request'
+        WHEN [Type] = 257 THEN 'Scan Command'
+        WHEN [Type] = 258 THEN 'Update Agent Command'
+        WHEN [Type] = 265 THEN 'Kernel Update'
+        WHEN [Type] = 266 THEN 'Blocking Hash'
+        WHEN [Type] = 270 THEN 'Cloud Relay'
+        WHEN [Type] = 515 THEN 'Machine Identification Request'
+        WHEN [Type] = 517 THEN 'Full Memory Dump Request Command'
+        WHEN [Type] = 519 THEN 'Cancel Scan Command'
+		else 'Other'
+   END AS Command
+,mc.Comment
+,mc.IsAutomatic
+,mc.UserName
+,mc.WorkStation
+,mc.Processed
+,mc.ErrorMessage
+,mc.Canceled
+,mc.CancelUserName
+
+from dbo.uvw_MachineCommands as mc
+LEFT JOIN [dbo].[Machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [mc].[FK_Machines]
+order by mc.ProcessUTCTime desc
+*/
