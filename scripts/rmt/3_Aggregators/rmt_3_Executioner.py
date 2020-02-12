@@ -11,10 +11,10 @@
 # SRUM?
 # Speed up amcache parsing - amcache may be parsing all
 # Return fields from amcache
-#| 3     | Language code
-#| 0     | Product Name    
-#| 1     | Company Name    
-#| c     | File Description
+#| 3	 | Language code
+#| 0	 | Product Name	
+#| 1	 | Company Name	
+#| c	 | File Description
 #
 # Change Log
 # .1 3May2016 
@@ -153,9 +153,9 @@ def write_amcache(data):
 		
 def write_output(data):
 	with open(g_outputfile, 'ab+') as f:
-            csv_writer = unicodecsv.writer(f, encoding='utf-8')
-            for i in data:
-                #csv_writer.writerow(i.decode('utf-8') )
+			csv_writer = unicodecsv.writer(f, encoding='utf-8')
+			for i in data:
+				#csv_writer.writerow(i.decode('utf-8') )
 				#print i
 				csv_writer.writerow(i)
 	return
@@ -632,7 +632,11 @@ def Parse_Amcache(path):
 						#print type(ts)
 						#print ts.strftime("%B %d, %Y")
 						#timestamp = ts.strftime(DATE_ISO)
-						line = "{},{},{},{},{},{},{},{}".format(hostname, ts.strftime(DATE_ISO), "", e.entry.path.replace(',',''), "", "", e.entry.sha1, "amcache")
+						#print(e.entry.path)
+						if e.entry.path:
+							line = "{},{},{},{},{},{},{},{}".format(hostname, ts.strftime(DATE_ISO), "", e.entry.path.replace(',',''), "", "", e.entry.sha1, "amcache")
+						else:
+							line = "{},{},{},{},{},{},{},{}".format(hostname, ts.strftime(DATE_ISO), "", e.entry.path, "", "", e.entry.sha1, "amcache")
 						#line = hostname + ts.strftime(DATE_ISO) + e.entry.path + e.entry.sha1
 						#if line.count(',') > 7:
 						#	temp = line.split(',')
@@ -753,27 +757,27 @@ def main():
 	global g_debug
 	global g_overwrite
 	print(r"""
-             / /
-          (\/_//`)
-           /   '/
-          0  0   \
-         /        \
-        /    __/   \
-       /,  _/ \     \_
-       `-./ )  |     ~^~^~^~^~^~^~^~\~.
-           (   /                     \_}
-              |        R S A  /      |
-              ;     |         \      /
-               \/ ,/           \    |
-               / /~~|~|~~~~~~|~|\   |
-              / /   | |      | | `\ \
-             / /    | |      | |   \ \
-            / (     | |      | |    \ \
-           /,_)    /__)     /__)   /,_/
-     ''''''''''''''''''''''''''''''''''''''''
-     ''''''''''   RSA Mass Triage   '''''''''
-     ''''''''''''''''''''''''''''''''''''''''
-    """)
+			 / /
+		  (\/_//`)
+		   /   '/
+		  0  0   \
+		 /		\
+		/	__/   \
+	   /,  _/ \	 \_
+	   `-./ )  |	 ~^~^~^~^~^~^~^~\~.
+		   (   /					 \_}
+			  |		R S A  /	  |
+			  ;	 |		 \	  /
+			   \/ ,/		   \	|
+			   / /~~|~|~~~~~~|~|\   |
+			  / /   | |	  | | `\ \
+			 / /	| |	  | |   \ \
+			/ (	 | |	  | |	\ \
+		   /,_)	/__)	 /__)   /,_/
+	 ''''''''''''''''''''''''''''''''''''''''
+	 ''''''''''   RSA Mass Triage   '''''''''
+	 ''''''''''''''''''''''''''''''''''''''''
+	""")
 	parser = argparse.ArgumentParser(description='')
 	parser.add_argument('-s', '--system', help='SYSTEM Hive Directory', required=False)
 	parser.add_argument('-a', '--amcache', help='Amcache.hve Directory', required=False)
