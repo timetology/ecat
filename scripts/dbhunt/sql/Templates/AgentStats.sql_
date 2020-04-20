@@ -36,6 +36,12 @@ from uvw_machines
 where DriverErrorCode <> 0
 
 /*
+--Agent List
+SELECT DISTINCT ma.machinename, ma.operatingsystem, CONVERT(VARCHAR, ma.InstallUTCTime ,120) AS installutctime
+FROM dbo.machines as ma with(nolock)
+ORDER BY machinename
+*/
+/*
 --Driver Errors
 select MachineName, OperatingSystem,Version,convert(binary(4),DriverErrorCode) AS DriverError, InstallUTCTime
 from [dbo].uvw_machines
