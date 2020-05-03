@@ -8,7 +8,7 @@ AND mc.Processed = 0
 group by mc.comment
 order by 'count' desc
 
---Detail of commands to be processes
+--Detail of commands to be processed
 /*   
 SELECT
 mn.machinename
