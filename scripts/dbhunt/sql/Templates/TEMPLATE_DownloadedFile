@@ -27,8 +27,10 @@ LEFT JOIN uvw_NonModules as nmo WITH(NOLOCK) ON md.fk_NonModules = nmo.pk_NonMod
 
 
 WHERE
-	md.RemoteFileName <> N'<<<<FILENAME___HERE>>>>'
-
+	--md.RemoteFileName <> N'<<<<FILENAME___HERE>>>>'
+	-- Last 24 hours
+	md.AuditUTCDate >= DateAdd(hh, -24, GETDATE())
+	
 	--order by MachineName,AuditUTCDate desc
 	--order by AuditUTCDate desc
 	--order by MD5
