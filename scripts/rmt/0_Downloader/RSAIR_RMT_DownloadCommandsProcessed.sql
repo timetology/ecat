@@ -1,5 +1,5 @@
 --Summary of RMT download commands processed
-select mc.comment as 'Summary of RMT download commands to be processed', count(*) as 'count'
+select mc.comment as 'Summary of RMT download commands processed', count(*) as 'count'
 FROM [dbo].[MachineCommands] AS mc
 WHERE
 mc.Comment LIKE 'Download RSA rmt_0_downloader_%'
