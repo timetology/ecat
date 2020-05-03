@@ -29,7 +29,7 @@ Select mc.comment, count(*) as 'count' from  [dbo].[MachineCommands] as mc
 WHERE 
 mc.[Type] = 256  
 AND mc.[Processed] = 0
-AND mc.[comment] LIKE 'Download RSA File Download%'
+AND mc.Comment LIKE 'Download RSA rmt_0_downloader_%'
 group by mc.comment
 order by 'count' desc
 
