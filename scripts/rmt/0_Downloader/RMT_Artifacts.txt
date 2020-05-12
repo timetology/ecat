@@ -4,4 +4,4 @@ C:\Windows\AppCompat\Programs\Amcache.hve
 C:\Windows\System32\Tasks\At*.job
 C:\Windows\Tasks\At*.job
 C:\Windows\Prefetch\*.pf
-C:\Windows\system32\config\SOFTWARE
+C:\Windows\system32\sru\SRUDB.dat
