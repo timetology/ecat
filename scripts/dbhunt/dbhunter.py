@@ -18,7 +18,8 @@
 # .10	14Nov2016 - Fixed bug with --progressbar option
 # .11	01May2017 - Switched to using unicodecsv for writing output
 # .12	22Jun2017 - Added option to connecting to db via ssl (if enabled on db)
-#
+# .13	18May2020 - Added support for custom FROM in SQL to handle linked servers - also removed tqdm support and enabled full time --debug
+#	--customfrom "[linkedServer01].ECAT$Secondary.dbo.winTrackingEvents_P0 AS [se] WITH(NOLOCK)"
 # TODO
 # Allow specified time range for tracking events (e.g. last 24 hours)
 # MultiThreaded? (add sql to process to list, remove when thread starts processing?)
@@ -36,6 +37,7 @@ from datetime import datetime
 import sys
 import timeit
 import unicodecsv
+import re
 #from cStringIO import StringIO
 g_debug = False
 
@@ -96,7 +98,7 @@ def write_csv(output,directory,filepath):
 			print "[-] Unexpected error:", sys.exc_info()[0]
 		return
 
-def Run_SQL(db,filename):
+def Run_SQL(db,filename,customfrom):
 	global g_debug
 	try:
 		txt = open(filename, 'rb')
@@ -107,13 +109,21 @@ def Run_SQL(db,filename):
 		if g_debug:
 			print('[+] Processing {}'.format(filename))
 			start_time = timeit.default_timer()
+		tempfile = txt.read()
+		if customfrom:
+			
+			tempfile = re.sub('\[dbo\]\.\[WinTrackingEventsCache\] AS \[se\] WITH\(NOLOCK\)',customfrom,tempfile)
+			tempfile = re.sub('\[dbo\]\.\[WinTrackingEvents_P0\] AS \[se\] WITH\(NOLOCK\)', customfrom,tempfile)
+			tempfile = re.sub('\[dbo\]\.\[WinTrackingEvents_P1\] AS \[se\] WITH\(NOLOCK\)',customfrom,tempfile)
+			#tempfile = re.sub('FROM.*\[dbo\]\.\[WinTrackingEvents_P1\] AS \[se\] WITH\(NOLOCK\)','FROM ' + customfrom + '\r\n',tempfile,re.DOTALL)
+			print tempfile
+			#exit()
 
-		#print txt.read()
 		#Setup Cursor
 		cursor = db.cursor()
 
 		#setup Query
-		cursor.execute(txt.read())
+		cursor.execute(tempfile)
 		list = cursor.fetchall()
 
 		if g_debug:
@@ -138,9 +148,10 @@ def main():
 	parser.add_argument('-db','--database', help='ECAT database', metavar='<database>', default='ECAT$PRIMARY')
 	parser.add_argument('-o','--output', help='Output Directory', metavar='<output_dir>', default=os.getcwd())
 	parser.add_argument('-r','--recursive', help='Recursively traverse directory for .sql files', action='store_true', default=False)
+	parser.add_argument('--customfrom', help='custom FROM dbo e.g <dbo.winTrackingEvents_P1> or <[linked-server-01.fqdn].ECAT$Secondary.dbo.winTrackingEvents_P0>', metavar='<FROM dbo>')
 	parser.add_argument('--ssl', help='Use SSL', action='store_true', default=False)
-	parser.add_argument('--debug', help='Enable Debug Messages', action='store_true', default=False)
-	parser.add_argument('--progressbar', help='Include Progress bar (requires tqdm)', action='store_true', default=False)
+	parser.add_argument('--debug', help='Enable Debug Messages', action='store_true', default=True)
+	#parser.add_argument('--progressbar', help='Include Progress bar (requires tqdm)', action='store_true', default=False)
 
 	args = parser.parse_args()
 
@@ -188,6 +199,7 @@ def main():
 		parser.error("-p Password specified but -u User not assigned")
 
 
+
 	#Build query to connect to DB
 	if args.ssl:
 		if args.user and args.passwd:
@@ -205,44 +217,22 @@ def main():
 	except pyodbc.Error as err:
 		parser.error(err)
 
-	if g_debug:
-		print '\n'
+	print '\n'
 
-	#Process SQL
-	if args.progressbar:
+	for file in filelist:
 		try:
-			from tqdm import tqdm
-		except ImportError:
-			print('This script requires the tqdm module to print a progress bar. pip install tqdm (https://pypi.python.org/pypi/tqdm) or omit --progressbar')
-			quit()
+			output = Run_SQL(db,file,args.customfrom)
+		except Exception as e:
+			if g_debug:
+				if '[-]' not in str(e.args):
+					print(' [-] Error: {}'.format(e))
+				else:
+					print('{}'.format(e))
+		else:
+			if g_debug:
+				print('[+] Processed {}'.format(file))
+			write_csv_unicode(output,args.output,file)
 
-		for file in tqdm(filelist):
-			try:
-				output = Run_SQL(db,file)
-			except Exception as e:
-				if g_debug:
-					if '[-]' not in str(e.args):
-						print(' [-] Error: {}'.format(e))
-					else:
-						print('{}'.format(e))
-			else:
-				if g_debug:
-					print('[+] Processed {}'.format(args.file))
-				write_csv_unicode(output,args.output,file)
-	else:
-		for file in filelist:
-			try:
-				output = Run_SQL(db,file)
-			except Exception as e:
-				if g_debug:
-					if '[-]' not in str(e.args):
-						print(' [-] Error: {}'.format(e))
-					else:
-						print('{}'.format(e))
-			else:
-				if g_debug:
-					print('[+] Processed {}'.format(file))
-				write_csv_unicode(output,args.output,file)
 
 	#Close the DB
 	db.close()
