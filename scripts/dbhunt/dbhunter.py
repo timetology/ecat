@@ -116,7 +116,7 @@ def Run_SQL(db,filename,customfrom):
 			tempfile = re.sub('\[dbo\]\.\[WinTrackingEvents_P0\] AS \[se\] WITH\(NOLOCK\)', customfrom,tempfile)
 			tempfile = re.sub('\[dbo\]\.\[WinTrackingEvents_P1\] AS \[se\] WITH\(NOLOCK\)',customfrom,tempfile)
 			#tempfile = re.sub('FROM.*\[dbo\]\.\[WinTrackingEvents_P1\] AS \[se\] WITH\(NOLOCK\)','FROM ' + customfrom + '\r\n',tempfile,re.DOTALL)
-			print tempfile
+			#print tempfile
 			#exit()
 
 		#Setup Cursor
