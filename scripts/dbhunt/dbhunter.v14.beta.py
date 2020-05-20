@@ -328,9 +328,10 @@ def main():
 			txt = re.sub('\[dbo\]\.\[WinTrackingEvents_P0\] AS \[se\] WITH\(NOLOCK\)', args.customfrom,txt)
 			txt = re.sub('\[dbo\]\.\[WinTrackingEvents_P1\] AS \[se\] WITH\(NOLOCK\)',args.customfrom,txt)
 		
+		output = ''	
+		
 		#Handle linked servers
 		if args.linkedservers:
-			output = ''
 			for ls in LinkedServerList:
 				#print(ls)
 				#print(ls[0])
