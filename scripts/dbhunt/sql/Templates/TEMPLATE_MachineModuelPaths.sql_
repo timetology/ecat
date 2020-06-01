@@ -1,3 +1,6 @@
+DECLARE @searchstring AS VARCHAR(MAX)
+SET @searchstring = N'%safehound%'
+
 --Template for MachineModulePaths
 SELECT
 mn.machinename
@@ -24,6 +27,6 @@ from dbo.MachineModulePaths as mp
 	LEFT JOIN dbo.UserNames as fo with(nolock) on mp.FK_UserNames__FileOwner = fo.PK_UserNames
 	
 where
-	ofn.filename LIKE N'%searchstring%'
-	OR sfn.filename LIKE N'%searchstring%'
-	OR mo.description LIKE N'%searchstring%'
+	ofn.filename LIKE @searchstring
+	OR sfn.filename LIKE @searchstring
+	OR mo.description LIKE @searchstring
