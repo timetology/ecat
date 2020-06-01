@@ -13,6 +13,7 @@ SELECT
 	--,nmo.size
 	--,mo.FirstSeenUTCDate
 	,mo.PEUTCTimeDateStamp
+	,CONVERT(VARCHAR, mo.PEUTCTimeDateStamp,120) AS EUTCTimeDateStamp
 	,mo.Description
   	,convert(binary(16),mo.HashMD5) AS MD5
   	,convert(binary(20),mo.HashSHA1) AS SHA1
