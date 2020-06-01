@@ -5,7 +5,8 @@ SELECT
 	,mn.OperatingSystem
 	,md.RemotePath
 	,md.RemoteFileName
-	,md.AuditUTCDate
+	--,md.AuditUTCDate
+	,CONVERT(VARCHAR, md.AuditUTCDate,120) AS AuditUTCDate
 	,md.RelativeFileName
 	,CONCAT(mo.size, nmo.size) as SIZE
 	--,mo.size
@@ -16,8 +17,6 @@ SELECT
   	,convert(binary(16),mo.HashMD5) AS MD5
   	,convert(binary(20),mo.HashSHA1) AS SHA1
   	,convert(binary(32),mo.HashSHA256) AS SHA256 
-	--,mo.HashMD5
-	--,nmo.HashMD5
 	--,convert(binary(16),nmo.HashMD5) AS NonModuleMD5
   
 FROM uvw_MachineDownloaded as md
