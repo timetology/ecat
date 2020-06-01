@@ -12,8 +12,10 @@ mn.machinename
 ,mo.size
 ,mo.DaysSinceCompilation
 --,mo.DaysSinceCreation
-,mp.FileUTCTimeCreated
+--,mp.FileUTCTimeCreated
+,CONVERT(VARCHAR, mp.FileUTCTimeCreated,120) AS FileUTCTimeCreated
 ,mp.FileUTCTimeModified
+,CONVERT(VARCHAR, mp.FileUTCTimeModified,120) AS FileUTCTimeModified
 ,mo.NameImportedDlls
 ,mo.SectionsNames
 ,fo.UserName
