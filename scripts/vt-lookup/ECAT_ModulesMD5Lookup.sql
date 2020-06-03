@@ -14,21 +14,21 @@ SELECT convert(binary(16),mo.HashMD5) AS HashMD5
       , substring((
           SELECT TOP 5 '|'+[mn].MachineName AS [text()]
           FROM  [ECAT$PRIMARY].[dbo].[Machines] AS [mn] WITH(NOLOCK) 
-          INNER JOIN  [ECAT$PRIMARY].[dbo].[MachinesModules] AS [mm] WITH(NOLOCK) ON ([mn].[PK_Machines] = [mm].[FK_Machines])
+          LEFT JOIN  [ECAT$PRIMARY].[dbo].[MachinesModules] AS [mm] WITH(NOLOCK) ON ([mn].[PK_Machines] = [mm].[FK_Machines])
           WHERE ([mm].[FK_Modules] = [mo].[PK_Modules]) 
           For XML PATH ('')
           ), 2, 1000) [Machines]
-		, CONVERT(VARCHAR, mp.DownloadedUTCTime,120) AS DownloadedUTCTime
+	,CONVERT(VARCHAR, mp.DownloadedUTCTime,120) AS DownloadedUTCTime
+
+	,'"'+[mp].RemotePath+'"' As RemotePath
+	,'"'+[mp].RemoteFileName+'"' As RemoteFilename
 --      ,[mo].HashSHA256
-
-
-      ,'"'+[mp].RemotePath+'"' As RemotePath
-      ,'"'+[mp].RemoteFileName+'"' As RemoteFilename
+--	,convert(binary(32),mo.HashSHA256) AS SHA256 
 
   FROM [ECAT$PRIMARY].[dbo].[Modules] as [mo] WITH(NOLOCK)
-  INNER JOIN [ECAT$PRIMARY].[dbo].[ModuleStatistics] AS [mp] WITH(NOLOCK) ON ([mp].[FK_Modules] = [mo].[PK_Modules])
-  INNER JOIN [ECAT$PRIMARY].[dbo].[ModuleIOC] AS [mi] WITH(NOLOCK) ON ([mi].[FK_Modules] = [mo].[PK_Modules])
-  INNER JOIN [ECAT$PRIMARY].[dbo].[ModuleBiasStatus] AS [bs] WITH(NOLOCK) ON ([bs].[FK_Modules] = [mo].[PK_Modules])
+  LEFT JOIN [ECAT$PRIMARY].[dbo].[ModuleStatistics] AS [mp] WITH(NOLOCK) ON ([mp].[FK_Modules] = [mo].[PK_Modules])
+  LEFT JOIN [ECAT$PRIMARY].[dbo].[ModuleIOC] AS [mi] WITH(NOLOCK) ON ([mi].[FK_Modules] = [mo].[PK_Modules])
+  LEFT JOIN [ECAT$PRIMARY].[dbo].[ModuleBiasStatus] AS [bs] WITH(NOLOCK) ON ([bs].[FK_Modules] = [mo].[PK_Modules])
 
   WHERE ([mi].IOCLevel1 > 0 OR [mi].IOCLevel0 > 0) AND 
         ([mo].ModuleTypeEXE = 1 OR [mo].ModuleTypeDLL =1) AND
