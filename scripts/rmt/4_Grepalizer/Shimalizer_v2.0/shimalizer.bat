@@ -1,8 +1,8 @@
 @echo off
 echo.
-echo.Script:	Shimalizer v2.5
+echo.Script:	Shimalizer v2.6
 echo.Author: The Goat Factory
-echo.Date:	May 2017
+echo.Date:	2020-06-18
 echo.Legal1: Got Milk?"
 echo.Legal2:	Milk it!
 
@@ -20,17 +20,13 @@ grep -i -E "(tomcat|inetpub|wwwroot|webapps|clientaccess)" %1 | cut -d, -f4 | so
 echo "================================================================================================================" >> %1-Results\webFolders.txt
 grep -i -E "(tomcat|inetpub|wwwroot|webapps|clientaccess)" %1 >> %1-Results\webFolders.txt
 
-
-
 echo Processing reserved names....
 REM Reserved names frequency analysis
 grep -i -E "(explorer.exe|iexplore.exe|svchost.exe|ctfmon.exe|dllhost.exe)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\reservedNames.txt
 echo "================================================================================================================" >> %1-Results\reservedNames.txt
 grep -i -E "(explorer.exe|iexplore.exe|svchost.exe|ctfmon.exe|dllhost.exe)" %1 >> %1-Results\reservedNames.txt
 
-
-echo Processing Windows folder...
-
+echo Processing Windows folder..
 REM Frequency Analysis Windows folder
 grep -i -E "(:\\windows\\.{1,15},)" %1 |  cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\Windowsfolder.txt
 echo "================================================================================================================" >> %1-Results\Windowsfolder.txt
@@ -42,24 +38,41 @@ grep -i -E "(\\system32\\)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1
 echo "================================================================================================================" >> %1-Results\sys32folder.txt
 grep -i -E "(\\system32\\)" %1 >> %1-Results\sys32folder.txt
 
-echo Processing TEMP folder...
+echo Processing Any TEMP folder...
 REM Frequency analysis TEMP folder
-grep -i -E "(\\temp\\)" %1 | grep -E -v "(\{|\_|\-|\~|\()" | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\tempfolder.txt
-echo "================================================================================================================" >> %1-Results\tempfolder.txt
-grep -i -E "(\\temp\\)" %1 | grep -E -v "(\{|\_|\-|\~|\()" >> %1-Results\tempfolder.txt
+grep -i -E "(\\temp\\)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\anytempfolder.txt
+echo "================================================================================================================" >> %1-Results\anytempfolder.txt
+grep -i -E "(\\temp\\)" %1 >> %1-Results\anytempfolder.txt
 
-echo "Processing 0-99 byte size files..."
+echo Processing first level TEMP folder...
+REM Frequency analysis TEMP folder
+grep -i -E "(:\\temp\\)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\tempfolder.txt
+echo "================================================================================================================" >> %1-Results\tempfolder.txt
+grep -i -E "(:\\temp\\)" %1 >> %1-Results\tempfolder.txt
+
+echo Processing AppData folder...
+REM Frequency analysis TEMP folder
+grep -i -E "(\\appdata\\)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\appdatafolder.txt
+echo "================================================================================================================" >> %1-Results\appdatafolder.txt
+grep -i -E "(\\appdata\\)" %1 >> %1-Results\appdatafolder.txt
+
+echo Processing Downloads folder...
+REM Frequency analysis TEMP folder
+grep -i -E "(\\downloads\\)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\downloadsfolder.txt
+echo "================================================================================================================" >> %1-Results\downloadsfolder.txt
+grep -i -E "(\\downloads\\)" %1  >> %1-Results\downloadsfolder.txt
+
+echo Processing 0-99 byte size files...
 REM Frequency analysis files with >100 byte size
 grep -E "\,([0-9]{2})\,N\/A" %1 |  cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\LessThan100bytes.txt
 echo "================================================================================================================" >> %1-Results\LessThan100bytes.txt
 grep -E "\,([0-9]{2})\,N\/A" %1 >> %1-Results\LessThan100bytes.txt
 
-echo "Processing 100-999 byte size files..."
+echo Processing 100-999 byte size files...
 REM Frequency analysis files with >100 byte size
 grep -E "\,([0-9]{3})\,N\/A" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\Files100-999bytes.txt
 echo "================================================================================================================" >> %1-Results\Files100-999bytes.txt
 grep -E "\,([0-9]{3})\,N\/A" %1  >> %1-Results\Files100-999bytes.txt
-
 
 echo Processing TMP folder...
 REM Frequency analysis TMP folder
@@ -67,13 +80,11 @@ grep -i -E "(\\tmp\\)" %1 | grep -E -v "(\{|\_|\-|\~|\()" | cut -d, -f4 | sort |
 echo "================================================================================================================" >> %1-Results\tmpfolder.txt
 grep -i -E "(\\tmp\\)" %1 | grep -E -v "(\{|\_|\-|\~|\()" >> %1-Results\tmpfolder.txt
 
-
 echo Processing 2 char filenames...
 REM Two char filenames.
 grep "\\..\....," %1 |  cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\2char.txt
 echo "================================================================================================================" >> %1-Results\2char.txt
 grep "\\..\....," %1  >> %1-Results\2char.txt
-
 
 echo Processing files with suspicious extensions...
 REM Files with Suspicious extensions
@@ -89,13 +100,11 @@ grep -E -i "(\.bin,|\.dat,|\.log,|\.gif,|\.txt,|\.jpg,|\.rar,|\.tar,|\.sql,|\.zi
 echo "================================================================================================================" >> %1-Results\interestingExtensions.txt
 grep -E -i "(\.bin,|\.dat,|\.log,|\.gif,|\.txt,|\.jpg,|\.rar,|\.tar,|\.sql,|\.zip,)" %1 >> %1-Results\interestingExtensions.txt
 
-
 echo Processing filenames with .tmp extension...
 REM Files with TMP extensions
 grep -E -i "(\.tmp,)" %1 | cut -d, -f4 | sort | uniq -c -i | sort -nr > %1-Results\tmpExtension.txt
 echo "================================================================================================================" >> %1-Results\tmpExtension.txt
 grep -E -i "(\.tmp,)" %1 >> %1-Results\tmpExtension.txt
-
 
 echo Processing 1 char filenames...
 REM One char filename with any extension.
