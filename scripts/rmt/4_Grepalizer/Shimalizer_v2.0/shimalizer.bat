@@ -3,7 +3,7 @@ echo.
 echo.Script:	Shimalizer v2.6
 echo.Author: The Goat Factory
 echo.Date:	2020-06-18
-echo.Legal1: Got Milk?"
+echo.Legal1: Got Milk?
 echo.Legal2:	Milk it!
 
 mkdir \tmp
