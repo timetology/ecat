@@ -42,9 +42,8 @@ def main():
 		raise Exception("[!] Could not read file:" + filename)
 	else:
 		if g_debug:
-			print('[+] Processing {}'.format(filename))
-			print('[+] machineCheckList Length {}'.format(len(machineCheckList)))
-			#print('[+] MaxFiles {}'.format(args.maxfiles))
+			print('List of Machines to Match: {}'.format(filename))
+			print('Number of Machines to Match: {}'.format(len(machineCheckList)))
 		f.close()
 
 	#Build query to connect to DB
