@@ -1,13 +1,10 @@
 #!/usr/bin/python
 #
 
-
 import argparse
 import pyodbc
 
 global g_debug
-#g_debug = False
-
 
 
 def main():
@@ -21,7 +18,6 @@ def main():
 
 	args = parser.parse_args()
 
-	#global g_debug
 	g_debug = args.count
 	filename = args.filename
 
@@ -80,12 +76,6 @@ def main():
 		exit()
 	for match in matches:
 		print(match)
-	
-	#for (machine in machineCheckList (for host in hostnames)):
-	#	print(machine)
-	#	count += 1
-	#if g_debug:
-	#	print('Total Matched Systems: ' + str(count))
 	
 	#Close the DB
 	db.close()
