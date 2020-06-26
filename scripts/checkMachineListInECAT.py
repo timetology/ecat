@@ -4,9 +4,6 @@
 
 import argparse
 import pyodbc
-import math
-from time import sleep
-from tqdm import *
 
 global g_debug
 #g_debug = False
