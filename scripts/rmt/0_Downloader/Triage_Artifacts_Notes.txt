@@ -35,6 +35,12 @@ C:\Windows\System32\winevt\Logs\system.evtx
 ## TS Local Session Manager Operational - Logs RDP TO this system
 C:\Windows\System32\winevt\Logs\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx
 
+RDP From Forensics
+c:\users\[username]\AppData\Local\Microsoft\Terminal Server Client\Cache\
+
+Microsoft-Windows-TerminalServices-RDPClient/Operational
+https://nullsec.us/windows-rdp-related-event-logs-the-client-side-of-the-story/
+
 Windows Searching
 Starts with
 System.Filename:~<system_
