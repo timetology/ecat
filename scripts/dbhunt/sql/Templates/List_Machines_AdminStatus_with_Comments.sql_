@@ -1,6 +1,8 @@
 --List Machines with comments and admin status
-select mn.MachineName, ads.Description, mai.comment 
+select mn.MachineName, mn.LocalIp, mn.OperatingSystem, ads.Description as 'Status',  mai.Comment
 from dbo.MachineAdminInfo AS mai
 INNER JOIN  [dbo].[machines] AS [mn] WITH(NOLOCK) ON [mn].[PK_Machines] = [mai].[FK_Machines]
 INNER JOIN [dbo].[AdminStatus] AS [ads] WITH(NOLOCK) ON [ads].[PK_AdminStatus] = [mai].[FK_Adminstatus]
 where comment <> ''
+order by Description
+--Order By Comment Desc
