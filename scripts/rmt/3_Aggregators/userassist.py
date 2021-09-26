@@ -1,3 +1,4 @@
+# Source https://github.com/tasoskoutlis/Automated-Forensic-Analysis/blob/master/plugins/userassist.py
 import sys
 import struct
 from Registry import Registry
