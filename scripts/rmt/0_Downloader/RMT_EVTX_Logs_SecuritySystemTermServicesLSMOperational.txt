@@ -2,3 +2,4 @@ C:\Windows\System32\winevt\Logs\security.evtx
 C:\Windows\System32\winevt\Logs\system.evtx
 C:\Windows\System32\winevt\Logs\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx
 C:\Windows\System32\winevt\Logs\Microsoft-Windows-TerminalServices-RemoteConnectionManager%4Operational.evtx
+C:\Windows\System32\winevt\Logs\Microsoft-Windows-TerminalServices-RDPClient%4Operational.evtx
