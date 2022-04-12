@@ -28,6 +28,8 @@ LEFT JOIN uvw_NonModules as nmo WITH(NOLOCK) ON md.fk_NonModules = nmo.pk_NonMod
 
 WHERE
 	--md.RemoteFileName = N''
+	--mn.MachineName = ''
+	--md.RelativeFileName = ''
 	-- Last 24 hours
 	--md.AuditUTCDate >= DateAdd(hh, -24, GETDATE())
 	
