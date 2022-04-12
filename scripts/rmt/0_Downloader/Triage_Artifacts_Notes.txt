@@ -59,4 +59,10 @@ Older than
 datemodified:< dd/mm/yy
 
 Implicit AND e.g.
-System.Filename:~<system_ datemodified:< 2018-01-01 
+System.Filename:~<system_ datemodified:< 2018-01-01
+
+
+System.Filename:~<system_ datemodified:> 2022-04-11
+System.Filename:~<amcache_ datemodified:> 2022-04-11
+System.Filename:~<security_ datemodified:> 2022-04-11
+System.Filename:~<Microsoft-Windows-TerminalServices-LocalSessionManager datemodified:> 2022-04-11
