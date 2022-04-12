@@ -80,5 +80,5 @@ WHERE
 	[se].[BehaviorProcessCreateProcess] = 1 AND
 	[se].[FileName_Target] in ('cmd.exe', 'powershell.exe','wmic.exe','wmiprvse.exe') AND
 	sfn.filename NOT LIKE 'taskeng.exe' AND 
-	se.UserName IN ('AVIALL\desktopuser', 'AVIALL\ldadmin')
+	se.UserName IN ('desktopuser', 'ldadmin')
 	
