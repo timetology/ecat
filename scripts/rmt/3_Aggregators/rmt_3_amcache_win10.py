@@ -2,25 +2,12 @@
 # Amcache Win10 Parser - github.com/timetology
 # python 3
 
-
-#from __future__ import unicode_literals
-
 import argparse
-
 import datetime
-#import io
 import os
-#import struct
 import sys
 
-try:
-    from Registry import Registry
-except ImportError:
-    #print('This script requires python-registry Registry Directory in the same path: https://github.com/williballenthin/python-registry')
-    quit()
-
-
-
+from Registry import Registry
 
 def getTotalFilesStartsWith(path, file_prefix):
     counter = 0
