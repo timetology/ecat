@@ -2,12 +2,21 @@
 # Amcache Win10 Parser - github.com/timetology
 # python 3
 
+
+#from __future__ import unicode_literals
+
 import argparse
+
 import datetime
+#import io
 import os
+#import struct
 import sys
 
 from Registry import Registry
+
+
+
 
 def getTotalFilesStartsWith(path, file_prefix):
     counter = 0
@@ -48,15 +57,17 @@ def Parse_Single_Amcache(amcache):
 
             for subkey in volumes.subkeys():
                 line = ''
+                #print(subkey.timestamp())
                 for value in subkey.values():
                     line += str(value.value()) + ','
+                line = str(subkey.timestamp()) + ',' + line
                 ret.append(line)
     return ret
 
 def Parse_Amcache_Dir(path):
     total_files = getTotalFilesStartsWith(path, 'amcache')
     print("Amcache Hive Count: {}".format(total_files))
-    print('ProgramId,FileId,LowerCaseLongPath,LongPathHash,Name,OriginalFileName,Publisher,Version,BinFileVersion,BinaryType,ProductName,ProductVersion,LinkDate,BinProductVersion,AppxPackageFullName,AppxPackageRelativeId,Size,Language,Usn')
+    print('Source,LastModTimestamp,ProgramId,FileId(Sha1),LowerCaseLongPath,LongPathHash,Name,OriginalFileName,Publisher,Version,BinFileVersion,BinaryType,ProductName,ProductVersion,LinkDate,BinProductVersion,AppxPackageFullName,AppxPackageRelativeId,Size,Language,Usn')
     for filename in TraversePath(path):
         fname = os.path.split(filename)[1]
 
@@ -78,7 +89,7 @@ def main():
     if args.file:
         parsed = Parse_Single_Amcache(args.file)
         if parsed:
-            print('ProgramId,FileId,LowerCaseLongPath,LongPathHash,Name,OriginalFileName,Publisher,Version,BinFileVersion,BinaryType,ProductName,ProductVersion,LinkDate,BinProductVersion,AppxPackageFullName,AppxPackageRelativeId,Size,Language,Usn')
+            print('Source,LastModTimestamp,ProgramId,FileId,LowerCaseLongPath,LongPathHash,Name,OriginalFileName,Publisher,Version,BinFileVersion,BinaryType,ProductName,ProductVersion,LinkDate,BinProductVersion,AppxPackageFullName,AppxPackageRelativeId,Size,Language,Usn')
             for line in parsed:
                 print(args.file + ',' + line)
     elif args.directory:
