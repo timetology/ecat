@@ -66,3 +66,6 @@ System.Filename:~<system_ datemodified:> 2022-04-11
 System.Filename:~<amcache_ datemodified:> 2022-04-11
 System.Filename:~<security_ datemodified:> 2022-04-11
 System.Filename:~<Microsoft-Windows-TerminalServices-LocalSessionManager datemodified:> 2022-04-11
+
+#System Logs
+System.Filename:~<system_ System.Filename:~>evtx_
